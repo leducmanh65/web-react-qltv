@@ -1,0 +1,196 @@
+.book-management-container {
+  padding: 24px;
+}
+
+.book-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.book-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.book-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.book-search {
+  margin-bottom: 24px;
+}
+
+.book-search input {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 16px 12px 44px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.book-table-wrapper {
+  overflow-x: auto;
+}
+
+.book-table {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.book-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.book-table thead {
+  background-color: #f9fafb;
+}
+
+.book-table th {
+  padding: 16px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.book-table th.center {
+  text-align: center;
+}
+
+.book-table td {
+  padding: 16px;
+  font-size: 14px;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.book-table td.center {
+  text-align: center;
+}
+
+.book-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.book-quantity {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.book-quantity.available {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.book-quantity.unavailable {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.book-action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.book-action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.book-action-btn.edit {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.book-action-btn.edit:hover {
+  background-color: #bfdbfe;
+}
+
+.book-action-btn.delete {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.book-action-btn.delete:hover {
+  background-color: #fecaca;
+}
+
+.book-action-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.book-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.book-form-full {
+  grid-column: 1 / -1;
+}
+
+.book-empty-state {
+  padding: 60px 20px;
+  text-align: center;
+  color: #6b7280;
+  background: white;
+  border-radius: 12px;
+  margin-top: 24px;
+}
+
+.book-empty-state svg {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  fill: #9ca3af;
+}
+
+.book-empty-state p {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .book-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .book-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-table-wrapper {
+    overflow-x: scroll;
+  }
+
+  .book-table {
+    min-width: 800px;
+  }
+}
