@@ -86,7 +86,7 @@ const Login = ({ onLogin }) => {
 
         <div className="login-demo-accounts">
           <h4>Tài khoản mẫu:</h4>
-          <p>• <strong>Admin:</strong> admin / 123456</p>
+          <p>• <strong>Admin(Quản trị):</strong> admin / 123456</p>
           <p>• <strong>Thủ thư:</strong> librarian01 / 123456</p>
           <p>• <strong>Độc giả:</strong> user01 / 123456</p>
         </div>
