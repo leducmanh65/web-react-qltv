@@ -8,13 +8,13 @@ import location_icon from '../Assets/icons8-location-24.png'
 import user_icon from '../Assets/user.png'
 
 const LoginSignup = () => {
-  const [action, setAction] = useState("Login");
+  const [action, setAction] = useState("");
 
   return (
     <div className='login-container'>
       <div className={`container ${action === "Login" ? "login-mode" : "signup-mode"}`}>
       <div className="header">
-        <div className="text">{action}</div>
+        <div className="text">{action === "Signup" ? "Sign Up" : action}</div>
         <div className="underline"></div>
       </div>
 
