@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -40,3 +41,52 @@
 .read-the-docs {
   color: #888;
 }
+=======
+.app-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.app-main {
+  margin-left: 260px;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+.app-header {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e5e7eb;
+  padding: 20px 24px;
+}
+
+.app-header-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.app-content {
+  padding: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-main {
+    margin-left: 0;
+  }
+
+  .app-content {
+    padding: 16px;
+  }
+
+  .app-header {
+    padding: 16px;
+  }
+
+  .app-header-title {
+    font-size: 18px;
+  }
+}
+>>>>>>> 32839f73306a8eabb5da96a1845bad45fd5b38a8

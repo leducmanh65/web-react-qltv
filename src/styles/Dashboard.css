@@ -1,0 +1,131 @@
+.dashboard-container {
+  padding: 24px;
+}
+
+.dashboard-welcome {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 32px;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #2563eb;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card.blue {
+  border-left-color: #2563eb;
+}
+
+.stat-card.green {
+  border-left-color: #16a34a;
+}
+
+.stat-card.purple {
+  border-left-color: #9333ea;
+}
+
+.stat-card.red {
+  border-left-color: #dc2626;
+}
+
+.stat-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-card-info h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  margin: 0 0 12px 0;
+}
+
+.stat-card-info p {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.stat-card-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.stat-card.blue .stat-card-icon {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.stat-card.green .stat-card-icon {
+  background-color: rgba(22, 163, 74, 0.1);
+}
+
+.stat-card.purple .stat-card-icon {
+  background-color: rgba(147, 51, 234, 0.1);
+}
+
+.stat-card.red .stat-card-icon {
+  background-color: rgba(220, 38, 38, 0.1);
+}
+
+.stat-card-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.stat-card.blue .stat-card-icon svg {
+  fill: #2563eb;
+}
+
+.stat-card.green .stat-card-icon svg {
+  fill: #16a34a;
+}
+
+.stat-card.purple .stat-card-icon svg {
+  fill: #9333ea;
+}
+
+.stat-card.red .stat-card-icon svg {
+  fill: #dc2626;
+}
+
+.dashboard-loading {
+  padding: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-welcome {
+    font-size: 24px;
+  }
+}
