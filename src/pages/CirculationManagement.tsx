@@ -1,7 +1,16 @@
+import { useState } from "react";
 import TopBar from "../components/TopBar";
-import { Search, CheckCircle, AlertCircle, Clock, Plus } from "lucide-react";
+import { Search, CheckCircle, AlertCircle, Clock, Plus, X } from "lucide-react";
+
 
 export default function CirculationManagement() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    idUser: "",
+    idBook: "",
+    note: ""
+  });
+
   // Mock data
   const borrowSlips = [
     { id: 1, user: "John Doe", book: "The Great Gatsby", borrowDate: "2024-03-01", dueDate: "2024-03-15", status: "Active" },
@@ -9,7 +18,6 @@ export default function CirculationManagement() {
     { id: 3, user: "Admin User", book: "Design Patterns", borrowDate: "2024-03-05", dueDate: "2024-03-19", status: "Returned" },
   ];
 
-  // Helper để lấy Config hiển thị (Icon + Class) dựa trên status
   const getStatusConfig = (status: string) => {
     switch (status) {
       case "Active": 
@@ -22,6 +30,34 @@ export default function CirculationManagement() {
         return { className: "", icon: null };
     }
   };
+
+  const handleOpenModal = () => {
+    console.log("Opening modal...");
+    alert("Button clicked!"); // Test if button works
+    setIsModalOpen(true);
+    console.log("Modal state set to:", true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setFormData({ idUser: "", idBook: "", note: "" });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+    alert(`Borrow Slip Created!\nUser ID: ${formData.idUser}\nBook ID: ${formData.idBook}\nNote: ${formData.note}`);
+    handleCloseModal();
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  console.log("Component rendering, isModalOpen:", isModalOpen);
 
   return (
     <div>
@@ -37,13 +73,13 @@ export default function CirculationManagement() {
             />
          </div>
          
-         <button className="btn-primary">
+         <button className="btn-primary" onClick={handleOpenModal}>
             <Plus size={18} /> Create Slip
          </button>
       </div>
 
       {/* Table */}
-      <div className="card" style={{ padding: 0 }}> {/* Padding 0 để table full viền */}
+      <div className="card" style={{ padding: 0 }}>
         <table className="table-container">
           <thead>
             <tr>
@@ -83,6 +119,73 @@ export default function CirculationManagement() {
           </tbody>
         </table>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={handleCloseModal}>
+              <X size={20} />
+            </button>
+            
+            <div className="modal-header">
+              <h2 className="modal-title">Create Borrow Slip</h2>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label">ID USER</label>
+                <input
+                  type="text"
+                  name="idUser"
+                  className="form-input"
+                  value={formData.idUser}
+                  onChange={handleInputChange}
+                  placeholder="Enter user ID"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">ID BOOK</label>
+                <input
+                  type="text"
+                  name="idBook"
+                  className="form-input"
+                  value={formData.idBook}
+                  onChange={handleInputChange}
+                  placeholder="Enter book ID"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">NOTE</label>
+                <textarea
+                  name="note"
+                  className="form-input form-textarea"
+                  value={formData.note}
+                  onChange={handleInputChange}
+                  placeholder="Enter notes..."
+                />
+              </div>
+
+              <div className="form-actions">
+                <button type="submit" className="btn-submit">
+                  Submit
+                </button>
+                <button 
+                  type="button" 
+                  className="btn-cancel"
+                  onClick={handleCloseModal}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

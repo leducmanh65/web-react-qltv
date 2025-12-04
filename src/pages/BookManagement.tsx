@@ -1,6 +1,8 @@
 import { useState } from "react";
 import TopBar from "../components/TopBar";
 import { Loader2, Plus, Edit, Trash2 } from "lucide-react";
+import AddBookModal from "../components/AddBookModal";
+import type { BookFormData } from "../components/AddBookModal";
 
 import {
   useBookData, useAuthorData, useCategoryData, useTagData
@@ -17,6 +19,7 @@ const getStatusBadge = (book: Book) => {
 
 export default function BookManagement() {
   const [activeTab, setActiveTab] = useState("books");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const tabs = ["books", "authors", "categories", "tags"];
 
   //(loading, refetch tự động)
@@ -36,13 +39,37 @@ export default function BookManagement() {
 
   //nuts them
   const handleAddNew = () => {
-    console.log(`Opening Modal/Form for: ${activeTab}`);
-    // Sau khi API POST thành công:
-    // if (activeTab === 'books') refetchBooks();
-    // if (activeTab === 'authors') refetchAuthors(); 
+    setIsModalOpen(true);
   };
-  // xoas
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleFormSubmit = async (bookData: BookFormData) => {
+    console.log('Submitting book data:', bookData);
+    
+    // TODO: Gọi API POST để thêm sách mới
+    // try {
+    //   const response = await fetch('YOUR_API_ENDPOINT', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(bookData)
+    //   });
+    //   
+    //   if (response.ok) {
+    //     refetchBooks(); // Refresh danh sách sau khi thêm thành công
+    //     setIsModalOpen(false);
+    //   }
+    // } catch (error) {
+    //   console.error('Error adding book:', error);
+    // }
+    
+    // Tạm thời đóng modal
+    setIsModalOpen(false);
+  };
+
+  // xoas
   const handleDelete = (id: number) => {
     if (window.confirm(`Are you sure you want to delete ${activeTab} with ID: ${id}?`)) {
       // Logic gọi API DELETE
@@ -193,6 +220,13 @@ export default function BookManagement() {
           </table>
         )}
       </div>
+
+      {/* Modal thêm sách */}
+      <AddBookModal 
+        isOpen={isModalOpen} 
+        onClose={handleModalClose}
+        onSubmit={handleFormSubmit}
+      />
     </div>
   );
 }
