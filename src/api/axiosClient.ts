@@ -1,52 +1,49 @@
-// src/api/axiosClient.ts
 import axios from 'axios';
 
+
+
 const axiosClient = axios.create({
-  baseURL: 'https://okhiepkkkkkkkkkkkkkkhahahahahahahahaha.up.railway.app', // Ví dụ: 'http://localhost:8080/api'
+  baseURL: 'https://okhiepkkkkkkkkkkkkkkhahahahahahahahaha.up.railway.app', 
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// --- THÊM INTERCEPTOR (Người gác cổng) ---
 axiosClient.interceptors.response.use(
   (response) => {
-    // Nếu phản hồi thành công (2xx), trả về dữ liệu bình thường
-    return response.data;
-  },
-  (error) => {
-    // Nếu có lỗi xảy ra
-    const { response } = error;
-
-    if (response) {
-      // Kiểm tra mã lỗi
-      if (response.status === 401) {
-        // Lỗi 401: Hết hạn phiên đăng nhập hoặc chưa đăng nhập
-        console.warn("Phiên đăng nhập hết hạn, đang chuyển hướng...");
-        
-        // Xóa token cũ nếu có (ví dụ lưu trong localStorage)
-        localStorage.removeItem('accessToken'); 
-
-        // Chuyển hướng về trang login
-        // Lưu ý: Dùng window.location để force reload lại trang sạch sẽ
-        window.location.href = '/auth'; // Đổi '/auth' thành đường dẫn trang login của bạn
-      }
-
-      if (response.status === 400) {
-        // Lỗi 400: Dữ liệu gửi lên sai
-        // THẬN TRỌNG: Nếu đang ở ngay trang Login mà bị 400 (sai pass) 
-        // thì không nên redirect vì sẽ làm f5 lại trang, mất dữ liệu đang nhập.
-        
-        // Chỉ redirect nếu bạn thực sự muốn:
-        // window.location.href = '/auth';
-        
-        console.error("Dữ liệu không hợp lệ:", response.data);
-      }
+    const res = response.data;
+    
+    // --- ĐOẠN CODE QUAN TRỌNG ĐÃ SỬA ---
+    // Backend trả về { code: 1000, message: "...", result: ... }
+    
+    // 1. Nếu code = 1000 là Thành công
+    if (res.code === 1000) {
+      // Nếu có biến 'result' (ví dụ lúc lấy danh sách) thì trả về result để giao diện vẽ
+      // Nếu 'result' là null/undefined (ví dụ lúc Xóa thành công) thì trả về nguyên cục 'res' để lấy message
+      return res.result ? res.result : res;
     }
-
+    
+    // 2. Nếu code KHÁC 1000 (Ví dụ 1001: Lỗi nghiệp vụ, 9999: Lỗi không xác định)
+    // Ta chủ động NÉM LỖI để hàm catch() bên ngoài bắt được và hiện Alert
+    return Promise.reject(new Error(res.message || "Lỗi từ phía Server"));
+  },
+  
+  (error) => {
+    // Xử lý lỗi HTTP (401, 403, 500...)
+    const { response } = error;
+    if (response) {
+      if (response.status === 401) {
+        console.warn("Phiên đăng nhập hết hạn.");
+        localStorage.removeItem('accessToken'); 
+        window.location.href = '/login'; 
+      }
+      // Log lỗi chi tiết ra console để debug
+      console.error("API Error:", response.data);
+    }
     return Promise.reject(error);
   }
 );
+
 axiosClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('accessToken');
   if (token) {
@@ -54,4 +51,5 @@ axiosClient.interceptors.request.use((config) => {
   }
   return config;
 });
+
 export default axiosClient;
