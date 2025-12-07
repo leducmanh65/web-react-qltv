@@ -1,0 +1,146 @@
+/* Top Navbar CSS */
+
+.top-navbar {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.navbar-left {
+    /* left area kept for spacing/alignment; intentionally empty now */
+    min-width: 200px;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #1f2937;
+    letter-spacing: -0.5px;
+}
+
+.navbar-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Search removed from top navbar - styles kept in case it's restored later */
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 200px;
+    justify-content: flex-end;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background: #fef3c7;
+    color: #f97316;
+}
+
+.badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #f97316;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7em;
+    font-weight: 700;
+    border: 2px solid white;
+}
+
+.divider {
+    width: 1px;
+    height: 30px;
+    background: #e5e7eb;
+    margin: 0 8px;
+}
+
+.user-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px 6px 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-btn:hover {
+    background: #e5e7eb;
+}
+
+.user-avatar-small {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.user-name-short {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .top-navbar {
+        padding: 0 16px;
+        height: 60px;
+    }
+
+    .page-title {
+        font-size: 1.1em;
+    }
+
+    .navbar-center {
+        display: none;
+    }
+
+    .navbar-left {
+        min-width: auto;
+    }
+
+    .user-name-short {
+        display: none;
+    }
+}
