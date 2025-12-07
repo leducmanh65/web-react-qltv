@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { X, User, Mail, Phone, Calendar, Save, Lock } from "lucide-react";
+import { X, Mail, Phone, Calendar, Save, Lock } from "lucide-react";
 import { updateUser } from "../../../api/apiService";
 import type { User as UserType } from "../../../hooks/useManagementHooks";
 
@@ -18,8 +18,6 @@ export default function EditUserForm({ isOpen, onClose, onSuccess, initialData }
     birthDate: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const isAdmin = initialData?.roles?.includes('admin') || initialData?.roles?.includes('Admin') || initialData?.roles?.includes('ADMIN');
 
   useEffect(() => {
     if (isOpen && initialData) {
@@ -45,30 +43,37 @@ export default function EditUserForm({ isOpen, onClose, onSuccess, initialData }
     if (!initialData?.id) return;
     if (!form.email.trim()) return alert("Email bắt buộc");
 
-    // Kiểm tra mật khẩu: bắt buộc 8 ký tự trở lên trừ admin
-    const isAdmin = initialData.roles?.includes('admin') || initialData.roles?.includes('Admin') || initialData.roles?.includes('ADMIN');
-    if (!isAdmin) {
-      if (!form.password.trim()) {
-        return alert("Mật khẩu bắt buộc cho user không phải admin");
-      }
-      if (form.password.length < 8) {
-        return alert("Mật khẩu phải có ít nhất 8 ký tự");
-      }
+    // Kiểm tra mật khẩu: chỉ khi nhập mới cần ít nhất 8 ký tự
+    if (form.password.trim() && form.password.length < 8) {
+      return alert("Mật khẩu phải có ít nhất 8 ký tự");
     }
 
     setIsSubmitting(true);
     try {
-      const payload = {
-        ...form,
+      const payload: {
+        email: string;
+        phoneNumber: string;
+        birthDate: Date | null;
+        password?: string;
+      } = {
+        email: form.email,
+        phoneNumber: form.phoneNumber,
         birthDate: form.birthDate ? new Date(form.birthDate) : null
       };
+
+      // Chỉ gửi mật khẩu nếu có nhập
+      if (form.password.trim()) {
+        payload.password = form.password;
+      }
+
       await updateUser(initialData.id, payload);
       alert("Cập nhật thành công!");
       onSuccess();
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       console.error("Update failed", err);
-      alert(err?.response?.data?.message || "Cập nhật thất bại");
+      const errorMessage = err instanceof Error ? "Cập nhật thất bại" : "Cập nhật thất bại";
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -141,8 +146,8 @@ export default function EditUserForm({ isOpen, onClose, onSuccess, initialData }
         <div style={bodyStyle}>
           <form onSubmit={handleSubmit}>
             <div>
-              <label style={labelStyle}><Lock size={16} color="#f59e0b"/> Mật Khẩu Mới{!isAdmin && ' *'}</label>
-              <input type="password" style={inputStyle} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required={!isAdmin} />
+              <label style={labelStyle}><Lock size={16} color="#f59e0b"/> Mật Khẩu Mới (tùy chọn)</label>
+              <input type="password" style={inputStyle} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
             </div>
 
             <div>
