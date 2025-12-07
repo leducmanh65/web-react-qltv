@@ -1,6 +1,6 @@
 import React from 'react';
-import RecentlyReadCard from './RecentlyReadCardTW';
-import { Book, User } from '../types';
+import RecentlyReadCard from '../books/RecentlyReadCardTW';
+import { Book, User } from '../../types';
 
 type PanelBook = Book & { image?: string; author?: string; category?: string; reviews?: number };
 

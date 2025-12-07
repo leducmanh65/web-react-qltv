@@ -1,5 +1,5 @@
 import React from 'react';
-import UserProfile from '../components/UserProfile';
+import UserProfile from '../components/profile/UserProfile';
 import '../styles/UserProfilePage.css';
 
 const UserProfilePage: React.FC = () => {

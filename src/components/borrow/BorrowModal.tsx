@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Book } from '../types';
+import { Book } from '../../types';
 
 export interface BorrowModalProps {
     book: (Book & { author?: string }) | null;
@@ -7,6 +7,7 @@ export interface BorrowModalProps {
     onConfirm: (days: number) => void;
 }
 
+// Modal mượn sách: chọn số ngày, gọi onConfirm
 const BorrowModal: React.FC<BorrowModalProps> = ({ book, onClose, onConfirm }) => {
     const [days, setDays] = useState<number>(14);
 

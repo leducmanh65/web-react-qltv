@@ -1,5 +1,5 @@
 import React from 'react';
-import { Genre } from '../types';
+import { Genre } from '../../types';
 
 export interface GenreIconProps {
     genre: Genre & { icon?: React.ReactNode };

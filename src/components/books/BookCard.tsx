@@ -1,6 +1,6 @@
 import React from 'react';
-import StatusBadge from './StatusBadge';
-import { Book } from '../types';
+import StatusBadge from '../shared/StatusBadge';
+import { Book } from '../../types';
 
 export interface BookCardProps {
     book: Book & {

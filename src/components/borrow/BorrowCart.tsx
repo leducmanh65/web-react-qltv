@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { createBorrowSlip } from '../services/api';
-import { getStoredUser } from '../services/auth';
+import { createBorrowSlip } from '../../services/api';
+import { getStoredUser } from '../../services/auth';
 
 export interface BorrowCartItem {
     bookId: string | number;
@@ -16,6 +16,7 @@ export interface BorrowCartProps {
     onClose?: () => void;
 }
 
+// Drawer giỏ mượn: cho phép chỉnh số lượng và gửi phiếu mượn
 const BorrowCart: React.FC<BorrowCartProps> = ({ visible, onClose }) => {
     const [items, setItems] = useState<BorrowCartItem[]>([]);
     const [days, setDays] = useState<number>(14);
@@ -68,7 +69,7 @@ const BorrowCart: React.FC<BorrowCartProps> = ({ visible, onClose }) => {
             window.location.href = '/user';
             return;
         } catch (err) {
-            // Fallback local
+            // Fallback local (dev/demo)
             const loans = JSON.parse(localStorage.getItem('loans') || '[]');
             const allBooks = JSON.parse(localStorage.getItem('books') || '[]');
 

@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import TopNavbar from './TopNavbar';
 import RightProfilePanel from './RightProfilePanel';
-import BorrowCart from './BorrowCart';
+import BorrowCart from '../borrow/BorrowCart';
 import './MainLayout.css';
 
 interface MainLayoutProps {

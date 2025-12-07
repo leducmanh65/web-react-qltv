@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import BookDashboardTW from "./components/BookDashboardTW";
+import BookDashboardTW from "./components/books/BookDashboardTW";
 import { AuthProvider } from "./context/AuthContext";
 
 function App(): React.ReactElement {

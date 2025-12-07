@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import BorrowModal from '../components/BorrowModal';
+import BorrowModal from '../components/borrow/BorrowModal';
 import { Book } from '../types';
 import { getBookById, createBorrowSlip } from '../services/api';
 import { getStoredUser } from '../services/auth';

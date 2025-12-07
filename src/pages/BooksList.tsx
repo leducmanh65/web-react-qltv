@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Book } from '../types';
-import BorrowModal from '../components/BorrowModal';
+import BorrowModal from '../components/borrow/BorrowModal';
 import '../styles/bookslist.css';
 import { getBookById, getBooksPage, searchBooks, createBorrowSlip } from '../services/api';
 import { getStoredUser } from '../services/auth';

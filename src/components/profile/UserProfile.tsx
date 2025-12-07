@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './UserProfile.css';
-import { initializeSampleData } from '../data/sampleBooks';
-import { Book } from '../types';
+import { initializeSampleData } from '../../data/sampleBooks';
+import { Book } from '../../types';
 
 const UserProfile: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);

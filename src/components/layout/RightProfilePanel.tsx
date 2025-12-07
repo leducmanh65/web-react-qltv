@@ -1,5 +1,5 @@
 import React from 'react';
-import { Book, User } from '../types';
+import { Book, User } from '../../types';
 
 export interface RightProfilePanelProps {
     user?: User | null;

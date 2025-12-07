@@ -1,5 +1,5 @@
 import React from 'react';
-import { Book } from '../types';
+import { Book } from '../../types';
 
 export interface RecentlyReadCardProps {
     book: Book & { image?: string; chapter?: string; progress?: number };
