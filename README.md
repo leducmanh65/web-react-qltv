@@ -1,136 +1,75 @@
-# 📚 Quản Lý Thư Viện - Frontend User Interface
+# React + TypeScript + Vite
 
-Giao diện người dùng cho hệ thống quản lý thư viện - **Frontend Only**
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🚀 Chạy Dự Án
+Currently, two official plugins are available:
 
-```bash
-npm install
-npm start
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## React Compiler
+
+The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+
+Note: This will impact Vite dev & build performances.
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-Truy cập: **http://localhost:3000/user**
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-## 📁 Cấu Trúc Thư Mục
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-src/
-├── components/
-│   ├── UserProfile.js          # Component quản lý thư viện
-│   ├── UserProfile.css         # Styling
-│   └── StatusBadge.js          # Badge component
-├── pages/
-│   └── UserProfilePage.js      # Trang user
-├── styles/
-│   ├── UserProfilePage.css
-│   └── StatusBadge.css
-├── data/
-│   └── sampleBooks.js          # Dữ liệu mẫu
-├── App.js                       # Router
-└── index.js
-```
-
-## ✨ Tính Năng
-
-- ✅ Danh sách sách (Grid/List view)
-- ✅ Tìm kiếm real-time
-- ✅ Thêm sách mới
-- ✅ Sửa thông tin sách
-- ✅ Xóa sách
-- ✅ Responsive design (mobile/tablet/desktop)
-- ✅ Giao diện đẹp với gradient colors
-
-## 🔗 Kết Nối API Backend
-
-Khi backend hoàn thành, thay đổi phần fetch data trong `src/components/UserProfile.js`:
-
-```javascript
-// Line ~25-30: Thay localStorage bằng API call
-useEffect(() => {
-  // TODO: Thay thế URL backend của bạn
-  fetch('YOUR_API_URL/api/books')
-    .then(res => res.json())
-    .then(data => {
-      setBooks(data);
-      setFilteredBooks(data);
-    });
-}, []);
-```
-
-## 📝 Các Phần Cần Thay Đổi Khi Có API
-
-### 1. **handleSubmit** - Thêm/Sửa sách (Line ~80-120)
-```javascript
-// Thay localStorage.setItem() bằng API POST/PUT
-const response = await fetch('YOUR_API_URL/api/books', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(formData)
-});
-const newBook = await response.json();
-```
-
-### 2. **handleDelete** - Xóa sách (Line ~140-150)
-```javascript
-// Thay localStorage.removeItem() bằng API DELETE
-const response = await fetch('YOUR_API_URL/api/books/${id}', {
-  method: 'DELETE'
-});
-```
-
-## ⚠️ Lưu Ý Quan Trọng
-
-1. **API Base URL**: Thay `YOUR_API_URL` bằng URL backend thực tế
-2. **CORS**: Đảm bảo backend enable CORS
-3. **Response Format**: API phải return object với fields: `id, title, author, category, publishYear, description, quantity, imageUrl`
-4. **Error Handling**: Hiện chưa có error handling, có thể thêm sau
-5. **Dữ liệu mẫu**: File `src/data/sampleBooks.js` là data test, xóa sau khi kết nối API
-
-## 🎨 Tùy Chỉnh Màu Sắc
-
-File: `src/components/UserProfile.css`
-
-```css
-/* Thay đổi gradient colors */
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-```
-
-## 📦 Dependencies
-
-```json
-{
-  "react": "^18.2.0",
-  "react-dom": "^18.2.0",
-  "react-router-dom": "^6.x.x"
-}
-```
-
-## 🐛 Troubleshooting
-
-- **Module not found**: Chạy `npm install`
-- **Port 3000 already in use**: Dùng `PORT=3001 npm start`
-- **CORS error**: Kiểm tra backend CORS config
-
----
-
-**Made with ❤️ - Frontend Only**
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

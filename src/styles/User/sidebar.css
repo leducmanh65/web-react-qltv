@@ -1,0 +1,54 @@
+.user-sidebar {
+  width: 80px;
+  background-color: var(--card-white);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0;
+  border-right: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.user-sidebar-logo {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-orange);
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 20px;
+  margin-bottom: 40px;
+  cursor: pointer;
+}
+
+.user-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  align-items: center;
+}
+
+.user-nav-item {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  color: var(--text-gray);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-nav-item:hover, .user-nav-item.active {
+  color: var(--primary-orange);
+  background-color: #fff7ed; /* Màu cam rất nhạt */
+}
