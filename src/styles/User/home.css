@@ -1,0 +1,109 @@
+.user-home-page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--bg-app);
+}
+
+.user-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Scroll nội dung chính */
+  padding: 30px 40px; /* Padding rộng rãi như hình */
+  gap: 32px;
+}
+
+.user-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-dark);
+}
+
+.user-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.user-genre-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.user-search-box {
+  min-width: 220px;
+  display: flex;
+}
+
+.user-search-box input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.user-search-box input:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.15);
+}
+
+.user-no-results {
+  color: var(--text-gray);
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.user-pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+  padding: 20px 0;
+}
+
+.user-pagination-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-white);
+  color: var(--text-dark);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.user-pagination-btn:hover:not(:disabled) {
+  border-color: var(--primary-orange);
+  color: var(--primary-orange);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.user-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.user-pagination-info {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  min-width: 80px;
+  text-align: center;
+}
+
+.user-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}

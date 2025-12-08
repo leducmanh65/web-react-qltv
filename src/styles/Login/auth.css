@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:src/styles/auth.css
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +13,46 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+=======
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer base {
+    body {
+        /* Màu nền xám nhạt bao quanh */
+        background-color: #f6f5f7;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+    }
+}
+
+/*
+   AUTH CONTAINER STYLES (Giao diện Login)
+ */
+
+.auth-container {
+    background-color: #5490ff;
+    border-radius: 30px;
+    /* Bo góc tròn hơn giống ảnh */
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2),
+        0 10px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    width: 850px;
+    /* Rộng hơn một chút */
+    max-width: 100%;
+    min-height: 550px;
+    /* Cao hơn một chút để thoáng */
+    color: #333;
+>>>>>>> Stashed changes:src/styles/Login/auth.css
 }
 
 .container {
@@ -25,6 +66,93 @@ body {
   overflow: hidden;
 }
 
+<<<<<<< Updated upstream:src/styles/auth.css
+=======
+
+.auth-container p {
+    font-size: 24px;
+    font-weight: 300;
+    /* Font mảnh hơn */
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    margin: 20px 0 30px;
+    color: #fff;
+    /* Chữ trên nền xanh là màu trắng */
+}
+
+.auth-container span {
+    font-size: 12px;
+    color: #666;
+    margin-top: 15px;
+}
+
+.auth-container a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}
+
+/* Nút bấm chính (Màu xanh ngọc) */
+.auth-container button {
+    border-radius: 25px;
+    border: 1px solid #5bbfb6;
+    /* Viền xanh */
+    background-color: #5bbfb6;
+    /* Nền xanh */
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 50px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in, background-color 0.3s;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.auth-container button:hover {
+    background-color: #4daea6;
+    /* Đậm hơn chút khi hover */
+}
+
+.auth-container button:active {
+    transform: scale(0.95);
+}
+
+/* Nút Ghost (Nút trên nền ảnh) */
+.auth-container button.ghost {
+    background-color: transparent;
+    border-color: #FFFFFF;
+    border-width: 2px;
+}
+
+.auth-container form {
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+}
+
+/* Input Form */
+.auth-container input {
+    background-color: #e4faef;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    border-radius: 5px;
+    /* Bo nhẹ ô input */
+    outline: none;
+}
+
+/* --- ANIMATION LOGIC --- */
+
+>>>>>>> Stashed changes:src/styles/Login/auth.css
 .form-container {
   position: absolute;
   top: 0;
@@ -74,6 +202,7 @@ body {
   }
 }
 
+<<<<<<< Updated upstream:src/styles/auth.css
 @keyframes slideOut {
   0% {
     transform: translateX(0);
@@ -233,6 +362,21 @@ span {
   border-color: #4cafb4;
   color: #4cafb4;
   transform: scale(1.1);
+=======
+@keyframes show {
+
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+>>>>>>> Stashed changes:src/styles/Login/auth.css
 }
 
 .overlay-container {
@@ -251,6 +395,7 @@ span {
 }
 
 .overlay {
+<<<<<<< Updated upstream:src/styles/auth.css
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><style>.wave{opacity:0.3;fill:%234cafb4;}.wave2{opacity:0.2;fill:%2345b7aa;}.wave3{opacity:0.15;fill:%233da09f;}</style></defs><path class="wave" d="M0,300 Q300,200 600,300 T1200,300 L1200,600 L0,600 Z"/><path class="wave2" d="M0,350 Q300,250 600,350 T1200,350 L1200,600 L0,600 Z"/><path class="wave3" d="M0,400 Q300,300 600,400 T1200,400 L1200,600 L0,600 Z"/><circle class="wave" cx="200" cy="150" r="60"/><circle class="wave2" cx="900" cy="100" r="80"/><circle class="wave3" cx="600" cy="200" r="50"/></svg>');
   background-size: cover;
@@ -262,6 +407,57 @@ span {
   width: 200%;
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
+=======
+    /* Màu nền mặc định nếu ảnh lỗi */
+    /* background: #5bbfb6; */
+
+    /* Gradient giả lập nước biển nếu chưa có ảnh */
+    /* background: linear-gradient(to right, #4facfe, #00f2fe);  */
+
+    /* === BẠN HÃY THAY URL ẢNH CỦA BẠN VÀO DÒNG DƯỚI ĐÂY === */
+    /* background: url('c130.gif');
+     background: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+    color: #FFFFFF;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out; */
+    /* ----------------- */
+    background: transparent;
+
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+    color: #FFFFFF;
+
+
+    overflow: hidden;
+}
+
+/* THÊM class mới này vào CSS */
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Tương đương background-size: cover */
+    z-index: -1;
+    /* Đẩy video xuống dưới chữ */
+
+    /* Nếu video quá sáng làm khó đọc chữ, bạn có thể giảm độ sáng video ở đây */
+    filter: brightness(0.7);
+>>>>>>> Stashed changes:src/styles/Login/auth.css
 }
 
 .container.right-panel-active .overlay {
@@ -309,8 +505,27 @@ span {
   line-height: 1.3;
 }
 
+<<<<<<< Updated upstream:src/styles/auth.css
 .overlay-panel .title {
   color: white;
+=======
+.social-container button {
+    border: 1px solid #DDDDDD;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
+    background-color: #fff;
+    color: #333;
+    padding: 0;
+}
+
+.social-container button:hover {
+    background-color: #eee;
+>>>>>>> Stashed changes:src/styles/Login/auth.css
 }
 
 .overlay-panel p {
@@ -330,6 +545,7 @@ span {
   .form-container,
   .overlay-container {
     width: 100%;
+<<<<<<< Updated upstream:src/styles/auth.css
   }
 
   .register-container,
@@ -391,6 +607,16 @@ span {
   }
 
   .container.right-panel-active .overlay-right {
+=======
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 13px;
+    color: #666;
+}
+
+.checkbox {
+>>>>>>> Stashed changes:src/styles/Login/auth.css
     display: flex;
     transform: translateX(0);
   }
@@ -408,3 +634,32 @@ span {
     font-size: 28px;
   }
 }
+<<<<<<< Updated upstream:src/styles/auth.css
+=======
+
+.checkbox input {
+    width: auto;
+    margin-right: 8px;
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ẩn nội dung cũ ngay lập tức */
+.default-content {
+    transition: opacity 0.3s;
+}
+>>>>>>> Stashed changes:src/styles/Login/auth.css

@@ -1,0 +1,71 @@
+.user-featured-section {
+  width: 100%;
+}
+
+.user-featured-container {
+  background-color: var(--card-white);
+  border-radius: var(--radius);
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.user-featured-left {
+  max-width: 50%;
+}
+
+.user-featured-left h1 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.user-featured-left p {
+  color: var(--text-gray);
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.user-join-btn {
+  background-color: var(--primary-orange);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(251, 146, 60, 0.3);
+}
+
+.user-featured-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.user-featured-books-grid {
+  display: flex;
+  gap: 8px;
+}
+
+.user-featured-book {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transform: rotate(5deg);
+}
+
+.user-featured-book:nth-child(even) {
+  transform: rotate(-5deg);
+}
+
+.user-view-all-btn {
+  display: none;
+}

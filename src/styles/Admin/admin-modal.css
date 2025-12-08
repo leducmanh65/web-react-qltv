@@ -1,0 +1,166 @@
+
+/* file css chung cho tag + category + book + borrowSlip... trong page admin */
+
+
+/* --- Overlay: Nền mờ --- */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: adminFadeIn 0.2s ease-in-out;
+}
+
+/* --- Content: Hộp thoại --- */
+.admin-modal-content {
+  background-color: #ffffff;
+  width: 500px;
+  max-width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  animation: adminSlideIn 0.3s ease-out;
+}
+
+/* --- Header --- */
+.admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.admin-modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0;
+}
+
+.admin-btn-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  color: #718096;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-btn-close:hover {
+  background-color: #f7fafc;
+  color: #2d3748;
+}
+
+/* --- Form Groups --- */
+.admin-form-group {
+  margin-bottom: 16px;
+}
+
+/* Label: Reset style để không bị nhận nhầm là nút */
+.admin-form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 8px;
+  background: none;
+  border: none;
+  padding: 3px; 
+}
+
+/* Input & Textarea */
+.admin-form-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #fff;
+  color: #2d3748;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.admin-form-input:focus {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+.admin-form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* --- Footer Actions --- */
+.admin-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+/* Buttons */
+.admin-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.admin-btn-primary {
+  background-color: #3182ce;
+  color: white;
+}
+
+.admin-btn-primary:hover {
+  background-color: #2b6cb0;
+}
+
+.admin-btn-primary:disabled {
+  background-color: #90cdf4;
+  cursor: not-allowed;
+}
+
+.admin-btn-cancel {
+  background-color: #ffffff;
+  color: #4a5568;
+  border-color: #cbd5e0;
+}
+
+.admin-btn-cancel:hover {
+  background-color: #f7fafc;
+  border-color: #a0aec0;
+}
+
+/* --- Animations --- */
+@keyframes adminFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes adminSlideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

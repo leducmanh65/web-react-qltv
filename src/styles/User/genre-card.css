@@ -1,0 +1,53 @@
+/* Genre button wrapper và genre card styles */
+
+.genre-button {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 0;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.genre-button:hover {
+  border-color: var(--primary-orange);
+  box-shadow: var(--shadow-sm);
+}
+
+.genre-button.active {
+  border-color: var(--primary-orange);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.genre-card {
+  background-color: var(--card-white);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.genre-card:hover {
+  background-color: var(--primary-orange);
+}
+
+.genre-card:hover .genre-name, 
+.genre-card:hover .genre-icon {
+  color: white;
+}
+
+.genre-icon {
+  font-size: 24px;
+}
+
+.genre-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-gray);
+}

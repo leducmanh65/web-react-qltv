@@ -1,0 +1,268 @@
+.dashboard-container {
+  padding: 24px;
+}
+
+.dashboard-welcome {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 32px;
+}
+
+<<<<<<< Updated upstream:src/styles/Dashboard.css
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #2563eb;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card.blue {
+  border-left-color: #2563eb;
+}
+
+.stat-card.green {
+  border-left-color: #16a34a;
+=======
+/* Chart Container */
+/* --- Chart Styles --- */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  min-height: 300px;
+}
+
+.chart-header {
+  margin-bottom: 30px;
+}
+
+.chart-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1B2559;
+  margin: 0;
+}
+
+.chart-subtitle {
+  font-size: 14px;
+  color: #A3AED0;
+  margin-top: 5px;
+}
+
+/* Khung chứa các cột */
+.bar-chart-container {
+  display: flex;
+  align-items: flex-end; /* Căn đáy các cột */
+  justify-content: space-between; /* Chia đều khoảng cách */
+  height: 220px;
+  width: 100%;
+  border-left: 1px solid black; /* Đường kẻ trục tung */
+  border-bottom: 1px solid black; /* Đường kẻ trục hoành */
+  padding-bottom: 10px; border-radius: 5px; background: linear-gradient(#E0E5F2, #FFFFFF);
+}
+
+/* Nhóm gồm: Số liệu + Cột + Nhãn */
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  flex: 1; /* Để các cột chia đều chiều rộng */
+}
+
+/* Giá trị số trên đầu cột */
+.bar-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: #4318FF;
+  margin-bottom: 6px;
+  transition: opacity 0.3s;
+}
+
+/* Cây cột */
+.bar {
+  width: 30px; /* Độ rộng cột */
+  border-radius: 5px;
+  transition: height 0.5s ease-in-out, background-color 0.3s;
+}
+
+.bar:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+/* Nhãn ngày bên dưới */
+.bar-label {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #A3AED0;
+  font-weight: 500;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 1200px) {
+  .dashboard-content-grid {
+    grid-template-columns: 1fr; /* Xếp chồng lên nhau nếu màn hình nhỏ */
+  }
+>>>>>>> Stashed changes:src/styles/Admin/Dashboard.css
+}
+
+.stat-card.purple {
+  border-left-color: #9333ea;
+}
+
+.stat-card.red {
+  border-left-color: #dc2626;
+}
+
+<<<<<<< Updated upstream:src/styles/Dashboard.css
+.stat-card-content {
+=======
+.new-books-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.new-book-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  margin-bottom: 8px;
+}
+
+.new-book-item:hover {
+  background-color: #F4F7FE;
+}
+
+.book-cover-placeholder {
+  width: 45px;
+  height: 60px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.dashboard-book-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-book-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2B3674;
+  margin: 0 0 4px 0;
+}
+
+.dashboard-book-author {
+  font-size: 12px;
+  color: #A3AED0;
+  margin: 0 0 6px 0;
+}
+
+.book-meta {
+>>>>>>> Stashed changes:src/styles/Admin/Dashboard.css
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-card-info h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  margin: 0 0 12px 0;
+}
+
+.stat-card-info p {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.stat-card-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.stat-card.blue .stat-card-icon {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.stat-card.green .stat-card-icon {
+  background-color: rgba(22, 163, 74, 0.1);
+}
+
+.stat-card.purple .stat-card-icon {
+  background-color: rgba(147, 51, 234, 0.1);
+}
+
+.stat-card.red .stat-card-icon {
+  background-color: rgba(220, 38, 38, 0.1);
+}
+
+.stat-card-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.stat-card.blue .stat-card-icon svg {
+  fill: #2563eb;
+}
+
+.stat-card.green .stat-card-icon svg {
+  fill: #16a34a;
+}
+
+.stat-card.purple .stat-card-icon svg {
+  fill: #9333ea;
+}
+
+.stat-card.red .stat-card-icon svg {
+  fill: #dc2626;
+}
+
+.dashboard-loading {
+  padding: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-welcome {
+    font-size: 24px;
+  }
+}
