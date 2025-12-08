@@ -1,0 +1,347 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer base {
+    body {
+        /* Màu nền xám nhạt bao quanh */
+        background-color: #f6f5f7;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+    }
+}
+
+/*
+   AUTH CONTAINER STYLES (Giao diện Login)
+ */
+
+.auth-container {
+    background-color: #5490ff;
+    border-radius: 30px;
+    /* Bo góc tròn hơn giống ảnh */
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2),
+        0 10px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    width: 850px;
+    /* Rộng hơn một chút */
+    max-width: 100%;
+    min-height: 550px;
+    /* Cao hơn một chút để thoáng */
+    color: #333;
+}
+
+.auth-container h1 {
+    font-weight: bold;
+    margin: 0;
+    font-size: 2.2rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-shadow: 4px rgb(255, 255, 255);
+}
+
+
+.auth-container p {
+    font-size: 24px;
+    font-weight: 300;
+    /* Font mảnh hơn */
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    margin: 20px 0 30px;
+    color: #fff;
+    /* Chữ trên nền xanh là màu trắng */
+}
+
+.auth-container span {
+    font-size: 12px;
+    color: #666;
+    margin-top: 15px;
+}
+
+.auth-container a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}
+
+/* Nút bấm chính (Màu xanh ngọc) */
+.auth-container button {
+    border-radius: 25px;
+    border: 1px solid #5bbfb6;
+    /* Viền xanh */
+    background-color: #5bbfb6;
+    /* Nền xanh */
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 50px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in, background-color 0.3s;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.auth-container button:hover {
+    background-color: #4daea6;
+    /* Đậm hơn chút khi hover */
+}
+
+.auth-container button:active {
+    transform: scale(0.95);
+}
+
+/* Nút Ghost (Nút trên nền ảnh) */
+.auth-container button.ghost {
+    background-color: transparent;
+    border-color: #FFFFFF;
+    border-width: 2px;
+}
+
+.auth-container form {
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+}
+
+/* Input Form */
+.auth-container input {
+    background-color: #e4faef;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    border-radius: 5px;
+    /* Bo nhẹ ô input */
+    outline: none;
+}
+
+/* --- ANIMATION LOGIC --- */
+
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.login-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.auth-container.right-panel-active .login-container {
+    transform: translateX(100%);
+}
+
+.register-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.auth-container.right-panel-active .register-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.auth-container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+/* --- PHẦN QUAN TRỌNG: HÌNH NỀN --- */
+.overlay {
+    /* Màu nền mặc định nếu ảnh lỗi */
+    /* background: #5bbfb6; */
+
+    /* Gradient giả lập nước biển nếu chưa có ảnh */
+    /* background: linear-gradient(to right, #4facfe, #00f2fe);  */
+
+    /* === BẠN HÃY THAY URL ẢNH CỦA BẠN VÀO DÒNG DƯỚI ĐÂY === */
+    /* background: url('c130.gif');
+     background: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+    color: #FFFFFF;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out; */
+    /* ----------------- */
+    background: transparent;
+
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+    color: #FFFFFF;
+
+
+    overflow: hidden;
+}
+
+/* THÊM class mới này vào CSS */
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Tương đương background-size: cover */
+    z-index: -1;
+    /* Đẩy video xuống dưới chữ */
+
+    /* Nếu video quá sáng làm khó đọc chữ, bạn có thể giảm độ sáng video ở đây */
+    filter: brightness(0.7);
+}
+
+.auth-container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 0px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.auth-container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.auth-container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+/* Social Icons */
+.social-container {
+    margin: 20px 0;
+}
+
+.social-container button {
+    border: 1px solid #DDDDDD;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
+    background-color: #fff;
+    color: #333;
+    padding: 0;
+}
+
+.social-container button:hover {
+    background-color: #eee;
+}
+
+/* Checkbox & Links */
+.content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 13px;
+    color: #666;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox input {
+    width: auto;
+    margin-right: 8px;
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ẩn nội dung cũ ngay lập tức */
+.default-content {
+    transition: opacity 0.3s;
+}
