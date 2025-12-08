@@ -1,9 +1,3 @@
-<<<<<<< Updated upstream
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-// Tùy theo bạn đặt tên file là page.tsx hay index.tsx
-import AuthPage from "./loginAndRegis/page"; 
-// import Layout from "./loginAndRegis/layout"; // Component Layout đã sửa
-=======
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import { useAdminGuard } from "./hooks/useAdminGuard";
 import { useUserGuard } from "./hooks/useUserGuard";
@@ -34,7 +28,6 @@ const AdminLayout = () => {
     </div>
   );
 };
->>>>>>> Stashed changes
 
 // User Layout: Bảo vệ các route user
 const UserLayout = () => {
@@ -44,19 +37,6 @@ const UserLayout = () => {
 
 export default function App() {
   return (
-<<<<<<< Updated upstream
-    <BrowserRouter>
-      {/* Bọc toàn bộ nội dung trong Layout */}
-      {/* <Layout>  */}
-        <Routes>
-          {/* Đường dẫn mặc định */}
-          <Route path="/" element={<AuthPage />} /> 
-          {/* Hoặc đường dẫn cụ thể */}
-          <Route path="/auth" element={<AuthPage />} /> 
-        </Routes>
-      {/* </Layout> */}
-    </BrowserRouter>
-=======
     <Router>
       <Routes>
         {/* Route Public: Login */}
@@ -84,6 +64,5 @@ export default function App() {
         </Route>
       </Routes>
     </Router>
->>>>>>> Stashed changes
   );
 }
