@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { X, Layers, Maximize, Image, Type, Upload, Loader } from "lucide-react";
-import { updateEbookPage, getEbookPageById } from "../../../api/apiService";
+import { X, Layers, Maximize, Image, Type, Upload, Loader, BookOpen } from "lucide-react";
+import { updateEbookPage, getEbookPageById, getEbookContent } from "../../../api/apiService";
 import { imgbbService } from "../../../api/imgbbService";
 import "../../../styles/Admin/ebook.css";
 
@@ -9,9 +9,10 @@ interface EditEbookFormProps {
   onClose: () => void;
   onSuccess: () => void;
   pageId: number | null;
+  bookId?: number | null;
 }
 
-export default function EditEbookForm({ isOpen, onClose, onSuccess, pageId }: EditEbookFormProps) {
+export default function EditEbookForm({ isOpen, onClose, onSuccess, pageId, bookId }: EditEbookFormProps) {
   const [form, setForm] = useState({
     pageNumber: 1,
     imageUrl: "",
@@ -24,19 +25,44 @@ export default function EditEbookForm({ isOpen, onClose, onSuccess, pageId }: Ed
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [availablePages, setAvailablePages] = useState<any[]>([]);
+  const [selectedPageId, setSelectedPageId] = useState<number | null>(pageId);
 
-  // Load page data when modal opens
+  // Load all pages for the book when modal opens
   useEffect(() => {
-    if (isOpen && pageId) {
-      loadPageData();
+    if (isOpen && bookId) {
+      loadAllPages();
     }
-  }, [isOpen, pageId]);
+  }, [isOpen, bookId]);
 
-  const loadPageData = async () => {
-    if (!pageId) return;
+  // Load selected page data when pageId changes
+  useEffect(() => {
+    if (isOpen && selectedPageId) {
+      loadPageData(selectedPageId);
+    }
+  }, [isOpen, selectedPageId]);
+
+  useEffect(() => {
+    if (pageId) setSelectedPageId(pageId);
+  }, [pageId]);
+
+  const loadAllPages = async () => {
+    if (!bookId) return;
+    try {
+      const res: any = await getEbookContent(bookId);
+      const pages = res?.data || res || [];
+      setAvailablePages(pages.sort((a: any, b: any) => (a.pageNumber || 0) - (b.pageNumber || 0)));
+    } catch (err) {
+      console.error("Failed to load pages:", err);
+      setAvailablePages([]);
+    }
+  };
+
+  const loadPageData = async (targetPageId: number) => {
+    if (!targetPageId) return;
     setIsLoading(true);
     try {
-      const pageData: any = await getEbookPageById(pageId);
+      const pageData: any = await getEbookPageById(targetPageId);
       setForm({
         pageNumber: pageData.pageNumber || 1,
         imageUrl: pageData.imageUrl || "",
@@ -55,7 +81,7 @@ export default function EditEbookForm({ isOpen, onClose, onSuccess, pageId }: Ed
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!pageId) return alert("ID trang không hợp lệ!");
+    if (!selectedPageId) return alert("ID trang không hợp lệ!");
     if (!form.imageUrl.trim()) return alert("URL hình ảnh bắt buộc!");
     
     setIsSubmitting(true);
@@ -69,7 +95,7 @@ export default function EditEbookForm({ isOpen, onClose, onSuccess, pageId }: Ed
     };
 
     try {
-      await updateEbookPage(pageId, payload);
+      await updateEbookPage(selectedPageId, payload);
       alert("✅ Cập nhật trang thành công!");
       onSuccess();
       onClose();
@@ -145,6 +171,24 @@ export default function EditEbookForm({ isOpen, onClose, onSuccess, pageId }: Ed
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
+              {availablePages.length > 0 && (
+                <div className="ebook-field">
+                  <label className="ebook-label"><BookOpen size={16} color="#3b82f6"/> Chon trang can sua</label>
+                  <select 
+                    className="ebook-select" 
+                    value={selectedPageId || ""} 
+                    onChange={(e) => setSelectedPageId(Number(e.target.value))}
+                  >
+                    <option value="">-- Chon trang --</option>
+                    {availablePages.map((page: any) => (
+                      <option key={page.id} value={page.id}>
+                        Trang {page.pageNumber} (ID: {page.id})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
               <div className="ebook-row" style={{ marginBottom: 16 }}>
                 <div className="col">
                   <label className="ebook-label"><Layers size={16} color="#f59e0b"/> Trang so *</label>

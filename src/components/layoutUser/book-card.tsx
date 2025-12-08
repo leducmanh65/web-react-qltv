@@ -1,6 +1,7 @@
 import React from "react";
 import "../../styles/User/book-card.css";
 
+
 export interface Book {
   id: number;
   title: string;
@@ -31,7 +32,7 @@ export const BookCard: React.FC<BookCardProps> = ({ book, onRead }) => {
     ? book.authors.map(a => a.authorName).join(", ")
     : "Unknown Author";
   
-  const coverUrl = book.imageUrl || "https://books2ebooks.eu/sites/default/files/inline-images/content-front-page-open-book.png";
+  const coverUrl = book.imageUrl || "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781476740195/the-library-book-9781476740195_lg.jpg";
   const displayPrice = book.price || 0;
   const estimatedOriginalPrice = displayPrice * 1.3; // Mock 30% discount
   const discount = Math.round(((estimatedOriginalPrice - displayPrice) / estimatedOriginalPrice) * 100);
@@ -44,21 +45,15 @@ export const BookCard: React.FC<BookCardProps> = ({ book, onRead }) => {
     <div className="user-book-card">
       <div className="user-book-cover-wrapper">
         <img className="user-book-cover" src={coverUrl} alt={book.title} />
-        {discount > 0 && <div className="user-discount-badge">-{discount}%</div>}
+     
       </div>
 
       <div className="user-book-info">
         <h3 className="user-book-title">{book.title}</h3>
         <p className="user-book-author">{authorNames}</p>
 
-        <div className="user-book-rating">
-          <span className="user-stars">{"★".repeat(fullStars) + "☆".repeat(emptyStars)}</span>
-          <span className="user-review-count">({reviews})</span>
-        </div>
-
         <div className="user-book-price">
-          <span className="user-current-price">${displayPrice.toFixed(2)}</span>
-          {discount > 0 && <span className="user-original-price">${estimatedOriginalPrice.toFixed(2)}</span>}
+          <span className="user-original-price">{book.description}</span>
         </div>
 
         <button className="user-read-btn" type="button" onClick={() => onRead?.(book)}>

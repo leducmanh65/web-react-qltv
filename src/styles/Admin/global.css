@@ -19,7 +19,7 @@
   /* --- Backgrounds --- */
   --bg-body: #F4F7FE;
   /* Nền tổng thể (Xám xanh rất nhạt) */
-  --bg-sidebar: #111C44;
+  --bg-sidebar: #2e2e2e;
   /* Nền Sidebar (Xanh đen đậm) */
   --bg-card: #FFFFFF;
   /* Nền Card (Trắng) */
@@ -95,6 +95,7 @@ body {
   max-height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: #e9e9e9;
   transition: all 0.3s ease;
 }
 
@@ -116,7 +117,7 @@ body {
 }
 
 .sidebar-header {
-  background-color:#00229b;
+  background-color:#1e1e1e;
   padding: 25px 32px;
   display: flex;
   align-items: center;
@@ -171,13 +172,13 @@ body {
 
 .nav-item:hover {
   color: var(--text-white);
-  background-color: #2B3674;
+  background-color: #353535;
 }
 
 .nav-item.active {
-  background: linear-gradient(to right, #ff0000, #9a0000); 
+  background: linear-gradient(to right, #474548, #474548); 
   color: var(--text-white);
-  background-color: #c43030;
+  background-color: #474548;
   /* font-weight: 700; */
 }
 

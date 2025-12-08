@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { X, BookOpen, Maximize, Image, Type, Upload, Loader, FileText, Combine, AlertTriangle } from "lucide-react";
-import { createEbookPage, getAllBooks } from "../../../api/apiService";
+import { useState, useEffect, useCallback } from "react";
+import { X, BookOpen, Image, Type, Upload, Loader, FileText, Combine, AlertTriangle, Search } from "lucide-react";
+import { createEbookPage, getAllBooks, getEbookContent } from "../../../api/apiService";
 import { imgbbService } from "../../../api/imgbbService";
 import { PDFConverterService } from "../../../api/pdfConverterService";
 import type { Book } from "../../../hooks/useManagementHooks";
@@ -15,7 +15,7 @@ interface CreateEbookFormProps {
 }
 
 export default function CreateEbookForm({ isOpen, onClose, onSuccess, books = [], initialBookId = 0 }: CreateEbookFormProps) {
-  const [form, setForm] = useState({ bookId: initialBookId, pageNumber: 1, imageUrl: "", contentText: "", width: 0, height: 0 });
+  const [form, setForm] = useState({ bookId: initialBookId, imageUrl: "", contentText: "", width: 0, height: 0 });
   const [localBooks, setLocalBooks] = useState<Book[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -24,14 +24,46 @@ export default function CreateEbookForm({ isOpen, onClose, onSuccess, books = []
   const [pdfPages, setPdfPages] = useState<number | null>(null);
   const [uploadMode, setUploadMode] = useState<'separate' | 'long'>('separate'); 
   const [uploadProgress, setUploadProgress] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [nextPageNumber, setNextPageNumber] = useState<number>(1);
+
+  const fetchNextPageNumber = useCallback(async (bookId: number) => {
+    try {
+      const res: any = await getEbookContent(bookId);
+      const pages = res?.data || res || [];
+      const maxPage = pages.length > 0 
+        ? Math.max(...pages.map((p: any) => p.pageNumber || 0))
+        : 0;
+      setNextPageNumber(maxPage + 1);
+    } catch (err) {
+      console.warn("Không tải được trang hiện tại, mặc định pageNumber = 1");
+      setNextPageNumber(1);
+    }
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
       if (books.length > 0) setLocalBooks(books);
       else getAllBooks().then((res: any) => setLocalBooks(res?.data || res || [])).catch(console.error);
-      if (initialBookId > 0) setForm(prev => ({ ...prev, bookId: initialBookId }));
+      if (initialBookId > 0) {
+        setForm(prev => ({ ...prev, bookId: initialBookId }));
+        fetchNextPageNumber(initialBookId);
+      }
     }
-  }, [isOpen, books, initialBookId]);
+  }, [isOpen, books, initialBookId, fetchNextPageNumber]);
+
+  const filteredBooks = localBooks.filter(b =>
+    b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    b.id.toString().includes(searchQuery)
+  );
+
+  const handleSelectBook = (bookId: number) => {
+    setForm(prev => ({ ...prev, bookId }));
+    setSearchQuery(localBooks.find(b => b.id === bookId)?.title || "");
+    setShowSuggestions(false);
+    fetchNextPageNumber(bookId);
+  };
 
   const resetForm = () => {
     setUploadedFile(null);
@@ -59,7 +91,7 @@ export default function CreateEbookForm({ isOpen, onClose, onSuccess, books = []
 
         await createEbookPage({
           bookId: Number(form.bookId),
-          pageNumber: Number(form.pageNumber),
+          pageNumber: nextPageNumber,
           imageUrl: response.data.url,
           contentText: "",
           width: response.data.width,
@@ -67,7 +99,7 @@ export default function CreateEbookForm({ isOpen, onClose, onSuccess, books = []
         });
 
         alert("Upload thanh cong (dang anh dai)!");
-        setForm(prev => ({ ...prev, pageNumber: prev.pageNumber + 1 }));
+        setNextPageNumber(prev => prev + 1);
       } else {
         setUploadProgress("Dang tach trang PDF...");
         const pages = await PDFConverterService.convertPDFToImages(uploadedFile);
@@ -83,7 +115,7 @@ export default function CreateEbookForm({ isOpen, onClose, onSuccess, books = []
 
             await createEbookPage({
               bookId: Number(form.bookId),
-              pageNumber: Number(form.pageNumber) + i,
+              pageNumber: nextPageNumber + i,
               imageUrl: res.data.url,
               contentText: "",
               width: page.width,
@@ -95,7 +127,7 @@ export default function CreateEbookForm({ isOpen, onClose, onSuccess, books = []
           }
         }
         alert(`Hoan tat: ${successCount}/${pages.length} trang.`);
-        setForm(prev => ({ ...prev, pageNumber: prev.pageNumber + pages.length }));
+        setNextPageNumber(prev => prev + pages.length);
       }
 
       onSuccess();
@@ -138,10 +170,11 @@ export default function CreateEbookForm({ isOpen, onClose, onSuccess, books = []
     if (!form.bookId || !form.imageUrl) return alert("Thieu thong tin");
     setIsSubmitting(true);
     try {
-        await createEbookPage(form);
+        await createEbookPage({ ...form, pageNumber: nextPageNumber });
         alert("Luu thanh cong");
         onSuccess();
-        setForm(prev => ({ ...prev, pageNumber: prev.pageNumber + 1, imageUrl: "" }));
+        setNextPageNumber(prev => prev + 1);
+        setForm(prev => ({ ...prev, imageUrl: "" }));
     } catch (e) { alert("Loi luu"); }
     finally { setIsSubmitting(false); }
   };
@@ -157,17 +190,53 @@ export default function CreateEbookForm({ isOpen, onClose, onSuccess, books = []
         </div>
 
         <div className="ebook-modal-body">
-          <div className="ebook-field">
-            <label className="ebook-label"><BookOpen size={16}/> Sach</label>
-            <select className="ebook-select" value={form.bookId} onChange={e => setForm({...form, bookId: +e.target.value})}>
-              <option value="0">-- Chon sach --</option>
-               {localBooks.map(b => <option key={b.id} value={b.id}>ID{b.id} - {b.title}</option>)}
-            </select>
-          </div>
-
-          <div className="ebook-field">
-             <label className="ebook-label"><Maximize size={16}/> Trang so</label>
-             <input type="number" className="ebook-input" value={form.pageNumber} onChange={e => setForm({...form, pageNumber: +e.target.value})} />
+          <div className="ebook-field" style={{ position: "relative" }}>
+            <label className="ebook-label"><BookOpen size={16}/> Tim kiem sach</label>
+            <div style={{ position: "relative" }}>
+              <Search size={16} style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "#999" }} />
+              <input 
+                type="text" 
+                className="ebook-input" 
+                style={{ paddingLeft: 36 }}
+                placeholder="Nhap ten hoac ID sach..."
+                value={searchQuery}
+                onChange={e => {
+                  setSearchQuery(e.target.value);
+                  setShowSuggestions(true);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+              />
+              {showSuggestions && searchQuery && filteredBooks.length > 0 && (
+                <div style={{
+                  position: "absolute", top: "100%", left: 0, right: 0,
+                  background: "white", border: "1px solid #ddd", borderRadius: 6,
+                  maxHeight: 200, overflowY: "auto", zIndex: 10, marginTop: 4,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+                }}>
+                  {filteredBooks.slice(0, 10).map(b => (
+                    <div 
+                      key={b.id} 
+                      style={{ 
+                        padding: "8px 12px", cursor: "pointer", 
+                        borderBottom: "1px solid #f0f0f0",
+                        background: form.bookId === b.id ? "#e3f2fd" : "white"
+                      }}
+                      onClick={() => handleSelectBook(b.id)}
+                      onMouseEnter={e => e.currentTarget.style.background = "#f5f5f5"}
+                      onMouseLeave={e => e.currentTarget.style.background = form.bookId === b.id ? "#e3f2fd" : "white"}
+                    >
+                      <div style={{ fontWeight: 600, fontSize: 14 }}>{b.title}</div>
+                      <div style={{ fontSize: 12, color: "#666" }}>ID: {b.id}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            {form.bookId > 0 && (
+              <div style={{ marginTop: 8, padding: "8px 12px", background: "#f0f9ff", borderRadius: 6, fontSize: 13 }}>
+                <strong>Sach da chon:</strong> ID {form.bookId} | <strong>Trang tiep theo:</strong> #{nextPageNumber}
+              </div>
+            )}
           </div>
 
           <div className="ebook-field">

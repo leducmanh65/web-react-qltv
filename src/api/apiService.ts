@@ -162,6 +162,10 @@ export const deleteBorrowSlipUser = (userId: number | string) => {
     return axiosClient.delete(`/api/borrowSlips/user/${userId}`);
 }
 
+export const updateBorrowSlip = (id: number | string, borrowSlipDto: any) => {
+    return axiosClient.put(`/api/borrowSlips/${id}`, borrowSlipDto);
+};
+
 // 5. CATEGORY CONTROLLER 
 export const getAllCategories = () => {
     return axiosClient.get('/api/category');

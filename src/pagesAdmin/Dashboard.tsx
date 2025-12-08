@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TopBar from "../components/TopBar";
-import { BookOpen, Users, FileText, TrendingUp, Loader2 } from "lucide-react";
-import { getAllBooks, getAllUsers, getAllBorrowSlips } from "../api/apiService";
+import { BookOpen, Users, FileText, TrendingUp, Loader2, Calendar } from "lucide-react";
+import { getAllBooks, getAllUsers, getBorrowSlipsByCreatedAt } from "../api/apiService";
 import type { Book, User, BorrowSlip } from "../hooks/useManagementHooks";
 import "../styles/Admin/dashboard.css";
 
@@ -11,32 +11,33 @@ interface StatCardProps {
   label: string;
   value: string | number;
   color: string;
+  background: string;
 }
 
-const StatCard = ({ icon: Icon, label, value, color }: StatCardProps) => (
-  <div className="card stat-card">
+const StatCard = ({ icon: Icon, label, value, color, background }: StatCardProps) => (
+  <div className="card stat-card" style={{background : background}}>
     <div className="stat-icon-circle" style={{ background: `${color}15`, color: color }}>
       <Icon size={32} />
     </div>
     <div className="stat-content">
-      <p className="stat-label">{label}</p>
-      <h3 className="stat-value">{value}</h3>
+      <p className="stat-label" style={{ background: `${color}15`, color: color }}>{label}</p>
+      <h3 className="stat-value" style={{ background: `${color}15`, color: color }}>{value}</h3>
     </div>
   </div>
 );
 
-// --- Helper: Lấy danh sách 7 ngày gần nhất (ngược lại từ hôm nay trở về trước) ---
-const getLast7Days = () => {
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
+// --- Helper: Lấy danh sách ngày (7 ngày hoặc 30 ngày) ---
+const getDateRange = (days: number) => {
+  const result = [];
+  for (let i = days - 1; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    days.push({
-      dateStr: d.toISOString().split('T')[0], // YYYY-MM-DD để so sánh
-      label: `${d.getDate()}/${d.getMonth() + 1}` // DD/MM để hiển thị
+    result.push({
+      dateStr: d.toISOString().split('T')[0], // YYYY-MM-DD
+      label: `${d.getDate()}/${d.getMonth() + 1}` // DD/MM
     });
   }
-  return days;
+  return result;
 };
 
 // --- Main Component ---
@@ -53,71 +54,68 @@ export default function Dashboard() {
   const [newBooksList, setNewBooksList] = useState<Book[]>([]);
   // State cho biểu đồ
   const [chartData, setChartData] = useState<{ label: string; count: number; height: number }[]>([]);
+  const [chartPeriod, setChartPeriod] = useState<'week' | 'month'>('week');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [booksRes, usersRes, slipsRes] = await Promise.all([
+        const [booksRes, usersRes] = await Promise.all([
           getAllBooks(),
-          getAllUsers(),
-          getAllBorrowSlips()
+          getAllUsers()
         ]);
 
         const books = (booksRes as unknown as Book[]) || [];
         const users = (usersRes as unknown as User[]) || [];
-        const slips = (slipsRes as unknown as BorrowSlip[]) || [];
 
-        // 1. Thống kê cơ bản
-        const activeSlips = slips.filter((s: any) => s.status !== "RETURNED");
         const sortedBooks = [...books].sort((a, b) => b.id - a.id);
-
-        // Lấy 10 cuốn để tính thống kê
         const recentStats = sortedBooks.slice(0, 10); 
-        // Chỉ lấy 3 cuốn để hiển thị ra list
         const recentBooks = sortedBooks.slice(0, 3);  
+
+        // Fetch borrow slips count for active borrows
+        const todayStr = new Date().toISOString().split('T')[0];
+        let activeBorrowsCount = 0;
+        try {
+          const todaySlips: any = await getBorrowSlipsByCreatedAt(todayStr);
+          const slips = todaySlips?.data || todaySlips || [];
+          activeBorrowsCount = slips.filter((s: any) => s.status !== "RETURNED").length;
+        } catch (err) {
+          console.warn("Could not fetch active borrows", err);
+        }
 
         setStats({
           totalBooks: books.length,
           totalUsers: users.length,
-          activeBorrows: activeSlips.length,
-          newBooksCount: recentStats.length // Card sẽ hiện 10
+          activeBorrows: activeBorrowsCount,
+          newBooksCount: recentStats.length
         });
 
-        setNewBooksList(recentBooks); // List chỉ hiện 3
+        setNewBooksList(recentBooks);
 
-        // 2. Xử lý dữ liệu Biểu đồ
+        // 2. Fetch chart data using getBorrowSlipsByCreatedAt for each date
+        const daysCount = chartPeriod === 'week' ? 7 : 30;
+        const dateRange = getDateRange(daysCount);
         const borrowCounts: Record<string, number> = {};
-        
-        slips.forEach((slip: any) => {
-          // Lấy ngày mượn từ chi tiết đầu tiên
-          const detail = slip.details?.[0];
-          if (detail && detail.borrowDate) {
-            let dateStr = "";
-            if (Array.isArray(detail.borrowDate)) {
-              // Chuyển mảng [YYYY, MM, DD] thành chuỗi
-              const [y, m, d] = detail.borrowDate;
-              dateStr = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-            } else {
-              dateStr = String(detail.borrowDate).substring(0, 10);
-            }
-            borrowCounts[dateStr] = (borrowCounts[dateStr] || 0) + 1;
-          }
-        });
 
-        // Map dữ liệu vào 7 ngày gần nhất
-        const last7Days = getLast7Days();
+        await Promise.all(
+          dateRange.map(async (day) => {
+            try {
+              const res: any = await getBorrowSlipsByCreatedAt(day.dateStr);
+              const slips = res?.data || res || [];
+              borrowCounts[day.dateStr] = slips.length;
+            } catch (err) {
+              borrowCounts[day.dateStr] = 0;
+            }
+          })
+        );
+
         let maxVal = 0;
-        
-        // Bước 1: Tính count cho từng ngày và tìm max để chia tỷ lệ
-        const tempChartData = last7Days.map(day => {
+        const tempChartData = dateRange.map(day => {
           const count = borrowCounts[day.dateStr] || 0;
           if (count > maxVal) maxVal = count;
           return { label: day.label, count };
         });
 
-        // Bước 2: Tính chiều cao % (height)
-        // Nếu maxVal = 0 (không có ai mượn) thì set height = 0
         const finalChartData = tempChartData.map(item => ({
           ...item,
           height: maxVal > 0 ? (item.count / maxVal) * 100 : 0
@@ -133,7 +131,7 @@ export default function Dashboard() {
     };
 
     fetchData();
-  }, []);
+  }, [chartPeriod]);
 
   if (loading) {
     return (
@@ -150,40 +148,46 @@ export default function Dashboard() {
 
       {/* 1. Grid Thống Kê */}
       <div className="dashboard-stat-grid">
-        <StatCard icon={BookOpen} label="Total Books" value={stats.totalBooks} color="#6A5AE0" />
-        <StatCard icon={Users} label="Total Users" value={stats.totalUsers} color="#FF8F6B" />
-        <StatCard icon={FileText} label="Active Borrows" value={stats.activeBorrows} color="#00C853" />
-        <StatCard icon={TrendingUp} label="New Books" value={stats.newBooksCount} color="#2D9CDB" />
+        <StatCard icon={BookOpen} label="Total Books" value={stats.totalBooks} color="#ffffffff"   background="linear-gradient(to right, #d64192, #a87fc7)" />
+        <StatCard icon={Users} label="Total Users" value={stats.totalUsers} color="#ffffffff" 
+        background="linear-gradient(to right, #946dbe, #926bbc)"/>
+        <StatCard icon={FileText} label="Active Borrows" value={stats.activeBorrows} color="#ffffffff"
+        background="linear-gradient(to right, #9fdfed,  #8fb5db)" />
+        <StatCard icon={TrendingUp} label="New Books" value={stats.newBooksCount} color="#ffffffff" 
+        background="linear-gradient(to right, #f7d085, #ef8664)"/>
       </div>
 
       {/* 2. Grid Nội Dung */}
       <div className="dashboard-content-grid">
         
         {/* === BIỂU ĐỒ (Div ID=1) === */}
-        <div className="card chart-card" id="1">
+        <div className="card chart-card" id="1" style={{background : "#ffffff", border: "1px solid #0048ff"}}>
           <div className="chart-header">
-            <h3 className="chart-title">Weekly Activity</h3>
-            <p className="chart-subtitle">Borrowing statistics for the last 7 days</p>
+            <div>
+              <h3 className="chart-title">{chartPeriod === 'week' ? 'Weekly' : 'Monthly'} Activity</h3>
+              <p className="chart-subtitle">Borrowing statistics for the last {chartPeriod === 'week' ? '7 days' : '30 days'}</p>
+            </div>
+            <button 
+              className="btn-toggle-period"
+              onClick={() => setChartPeriod(prev => prev === 'week' ? 'month' : 'week')}
+            >
+              <Calendar size={16} />
+              {chartPeriod === 'week' ? 'View Month' : 'View Week'}
+            </button>
           </div>
 
           <div className="bar-chart-container">
             {chartData.map((item, index) => (
               <div key={index} className="bar-group">
                 {/* Số lượng hiện khi hover hoặc luôn hiện */}
-                <div 
-                  className="bar-value" 
-                  style={{ opacity: item.count > 0 ? 1 : 0 }}
-                >
+                <div className={`bar-value ${item.count > 0 ? 'visible' : 'hidden'}`}>
                   {item.count}
                 </div>
                 
                 {/* Cột biểu đồ */}
                 <div 
-                  className="bar" 
-                  style={{ 
-                    height: `${Math.max(item.height, 2)}%`, // Tối thiểu 2% để hiện vạch nếu là 0
-                    backgroundColor: item.count > 0 ? '#4318FF' : '#E0E5F2' // Màu xám nếu là 0
-                  }}
+                  className={`bar ${item.count > 0 ? 'bar-active' : 'bar-empty'}`}
+                  style={{ height: `${Math.max(item.height, 2)}%` }}
                 ></div>
                 
                 {/* Nhãn ngày */}
@@ -194,18 +198,19 @@ export default function Dashboard() {
         </div>
 
         {/* New Books List Card */}
-        <div className="card new-books-card">
+        <div className="card new-books-card" style={{background : "#ffffff", border: "1px solid #0048ff"}}>
           <h3 className="new-books-title">New Books</h3>
           <ul className="new-books-list">
             {newBooksList.length === 0 ? (
               <p className="no-books-message">No books found.</p>
             ) : (
               newBooksList.map((book) => (
-                <li key={book.id} className="new-book-item">
-                  <div className="book-cover-placeholder" style={{
-                    background: `hsl(${(book.id * 50) % 360}, 70%, 80%)`
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '12px', height: '100%' }}>
+                <li key={book.id} className="new-book-item" style={{ background: `hsl(${(book.id * 50) % 360}, 70%, 80%)` }}>
+                  <div 
+                    className="book-cover-placeholder" 
+                    
+                  >
+                    <div className="book-cover-initial">
                       {book.title.charAt(0)}
                     </div>
                   </div>

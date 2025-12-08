@@ -7,7 +7,6 @@ export const SUGGESTIONS: { label: string; path: string }[] = [
   { label: "Pages / Ebook Management", path: "/admin/ebooks" },
   { label: "Pages / User Management", path: "/admin/users" },
   { label: "Pages / Circulation Management", path: "/admin/circulation" },
-  { label: "Pages / Settings", path: "/admin/settings" },
 ];
 
 type SearchResult = any[] | null;

@@ -1,17 +1,18 @@
 .user-home-page {
   display: flex;
-  width: 100%;
+  min-width:  100vw;
   height: 100vh;
   background-color: var(--bg-app);
 }
 
 .user-main-content {
-  flex: 1;
+  /* flex: 1; */
   display: flex;
   flex-direction: column;
   overflow-y: auto; /* Scroll nội dung chính */
   padding: 30px 40px; /* Padding rộng rãi như hình */
   gap: 32px;
+  width:  100%;
 }
 
 .user-section-title {
@@ -104,6 +105,6 @@
 
 .user-books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 24px;
 }

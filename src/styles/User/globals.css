@@ -32,6 +32,7 @@ body {
   background-color: var(--bg-app);
   color: var(--text-dark);
   height: 100vh;
+  width: 100%;
   overflow: hidden; /* Ẩn scroll body để scroll từng phần */
 }
 

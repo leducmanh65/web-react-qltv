@@ -50,6 +50,12 @@ export default function LoginPage() {
         console.warn("Lỗi đọc role:", err);
       }
 
+      // Lưu userId để dùng cho các trang user (lịch sử mượn/đọc, reader)
+      const userId = (response as any)?.user?.id ?? (response as any)?.id ?? (response as any)?.userId;
+      if (userId !== undefined && userId !== null) {
+        localStorage.setItem("userId", String(userId));
+      }
+
       const normalizedRole = role?.toString().toUpperCase() || "";
 
       // Lưu storage để dùng cho các request sau
