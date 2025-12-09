@@ -153,8 +153,8 @@ export default function LoginPage() {
           {!showAdminSelection ? (
             <button type="submit">Login</button>
           ) : (
-             <p style={{ color: 'green', fontWeight: 'bold', marginTop: 10 }}>
-               ✓ Xác thực thành công
+             <p style={{ color: '#00ca6fff', fontWeight: 'bold', marginTop: 10 }}>
+               Xác thực thành công
              </p>
           )}
         </form>

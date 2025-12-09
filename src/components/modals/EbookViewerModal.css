@@ -12,8 +12,8 @@
 
 .ebook-viewer-container {
   width: 90%;
-  max-width: 980px;
-  max-height: 90vh;
+  max-width: 900px;
+  max-height: 100vh;
   background: #fff;
   border-radius: 8px;
   overflow: hidden;

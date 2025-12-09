@@ -1,6 +1,8 @@
 import React from "react";
-import { BookCard } from "../components/layoutUser/book-card"; // Chỉnh đường dẫn
+import { BookCard } from "../components/layoutUser/book-card";
 import type { Book } from "../components/layoutUser/book-card";
+import { Layers } from "lucide-react";
+import "../styles/User/home.css";
 
 interface BookGridProps {
   loading: boolean;
@@ -12,16 +14,30 @@ interface BookGridProps {
 export const BookGrid: React.FC<BookGridProps> = ({ 
   loading, bookType, displayBooks, onBookClick 
 }) => {
+  const getTitle = () => {
+    if (bookType === "Ebook") return "Danh sách Ebook";
+    if (bookType === "Book") return "Danh sách Sách giấy";
+    return "Tất cả sách";
+  };
+
   return (
     <section>
-      <h3 className="user-section-title">
-        {bookType === "Ebook" ? "📚 Danh sách Ebook" : bookType === "Book" ? "📖 Danh sách Sách giấy" : "📚 Tất cả sách"} 
-        ({displayBooks.length})
-      </h3>
+      <div className="user-section__header">
+        <h3 className="user-section__title">
+          <Layers size={22} color="var(--user-primary)" /> 
+          {getTitle()} 
+          <span style={{ fontSize: "15px", color: "var(--user-text-gray)", marginLeft: "10px", fontWeight: "normal" }}>
+            ({displayBooks.length} cuốn)
+          </span>
+        </h3>
+      </div>
+
       {loading ? (
-        <p style={{ padding: "20px", textAlign: "center" }}>Đang tải...</p>
+        <div className="user-state--loading">
+          <p>⏳ Đang tải dữ liệu sách...</p>
+        </div>
       ) : (
-        <div className="user-books-grid">
+        <div className="user-grid__books">
           {displayBooks.length > 0 ? (
             displayBooks.map((book) => {
               const isEbook = bookType === "Ebook";
@@ -38,13 +54,9 @@ export const BookGrid: React.FC<BookGridProps> = ({
               );
             })
           ) : (
-            <p className="user-no-results" style={{ padding: "20px", textAlign: "center", color: "#666" }}>
-              {bookType === "Ebook"
-                ? "Không có ebook nào."
-                : bookType === "Book"
-                ? "Không có sách giấy nào."
-                : "Không tìm thấy sách nào."}
-            </p>
+            <div className="user-state--empty">
+              <p>Không tìm thấy cuốn sách nào phù hợp.</p>
+            </div>
           )}
         </div>
       )}

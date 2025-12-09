@@ -1,5 +1,7 @@
 import React from "react";
+import { Search, Filter } from "lucide-react";
 import type { Book } from "../components/layoutUser/book-card";
+import "../styles/User/home.css";
 
 interface AdvancedSearchProps {
   search: string;
@@ -25,35 +27,46 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
   onSearch
 }) => {
   return (
-    <section style={{ margin: "20px 0", padding: "20px", background: "#f5f5f5", borderRadius: "8px" }}>
-      <h3 className="user-section-title">Tìm kiếm nâng cao</h3>
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-        {/* Input tìm kiếm */}
-        <div style={{ position: "relative" }}>
+    <section className="user-filter__card">
+      <h3 className="user-section__title" style={{ marginBottom: "20px" }}>
+        <Filter size={20} color="var(--user-primary)" /> 
+        Tìm kiếm nâng cao
+      </h3>
+      
+      <div className="user-filter__row">
+        {/* Input tìm kiếm tên sách */}
+        <div style={{ position: "relative", flex: "2 1 300px" }}>
           <input
             type="text"
-            placeholder="Nhập tên sách..."
+            className="user-filter__input"
+            placeholder="Nhập tên sách cần tìm..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             list="book-suggestions"
-            style={{ minWidth: 200, padding: "8px" }}
+            style={{ paddingLeft: "42px" }}
           />
-          <datalist id="book-suggestions">
+          <Search 
+            size={18} 
+            color="#95a5a6" 
+            style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)" }} 
+          />
+          <datalist id="book-suggestions" >
             {allBooks.slice(0, 10).map((b) => (
-              <option key={b.id} value={b.title} />
+              <option key={b.id} value={b.title} style={{backgroundColor :"#ffffff"}}/>
             ))}
           </datalist>
         </div>
 
         {/* Select Category */}
         <select
+          className="user-filter__input"
+          style={{ flex: 1 }}
           value={selectedCategory?.id || ""}
           onChange={(e) => {
             const val = e.target.value;
             const found = categories.find((c) => String(c.id) === val);
             setSelectedCategory(found || null);
           }}
-          style={{ padding: "8px" }}
         >
           <option value="">-- Tất cả Thể loại --</option>
           {categories.map((c) => (
@@ -63,13 +76,14 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
 
         {/* Select Tag */}
         <select
+          className="user-filter__input"
+          style={{ flex: 1 }}
           value={selectedTag?.id || ""}
           onChange={(e) => {
             const val = e.target.value;
             const found = tags.find((t) => String(t.id) === val);
             setSelectedTag(found || null);
           }}
-          style={{ padding: "8px" }}
         >
           <option value="">-- Tất cả Tag --</option>
           {tags.map((t) => (
@@ -79,13 +93,14 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
 
         {/* Select Author */}
         <select
+          className="user-filter__input"
+          style={{ flex: 1 }}
           value={selectedAuthor?.id || ""}
           onChange={(e) => {
             const val = e.target.value;
             const found = authors.find((a) => String(a.id) === val);
             setSelectedAuthor(found || null);
           }}
-          style={{ padding: "8px" }}
         >
           <option value="">-- Tất cả Tác giả --</option>
           {authors.map((a) => (
@@ -93,10 +108,9 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
           ))}
         </select>
 
-        <button
-          onClick={onSearch}
-          style={{ padding: "8px 16px", backgroundColor: "#007bff", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
-        >
+        {/* Nút tìm kiếm */}
+        <button className="user-filter__btn" onClick={onSearch}>
+          <Search size={18} style={{ marginRight: 8 }} />
           Tìm kiếm
         </button>
       </div>

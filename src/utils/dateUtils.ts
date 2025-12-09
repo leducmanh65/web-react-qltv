@@ -2,7 +2,7 @@ export function formatDateArray(arr: any): string {
   try {
     if (!arr) return "";
     if (Array.isArray(arr)) {
-      const [y, m, d, hh = 0, mm = 0, ss = 0] = arr;
+      const [y, m, d, hh = 0, mm = 0] = arr;
       const month = String(m).padStart(2, '0');
       const day = String(d).padStart(2, '0');
       const hour = String(hh).padStart(2, '0');

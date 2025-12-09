@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import { useAdminGuard } from "./hooks/useAdminGuard";
-import { useUserGuard } from "./hooks/useUserGuard";
 
 // Components
 import Sidebar from "./components/Sidebar";
@@ -15,8 +14,11 @@ import EbookManagement from "./pagesAdmin/EbookManagement";
 // Pages User
 import LoginPage from "./loginAndRegis/LoginPage";
 import HomePage from "./pagesUser/HomePage";
-// 👇 1. IMPORT TRANG LỊCH SỬ MỚI (Kiểm tra lại đường dẫn folder của bạn nhé)
 import { ReadingHistoryPage } from "./pagesUser/ReadingHistoryPage";
+import { EbookHistoryPage } from "./pagesUser/EbookHistoryPage";
+import SettingsPage from "./pagesUser/SettingsPage";
+import UserLayout from "./pagesUser/UserLayout";
+import ReaderPage from "./pagesUser/ReaderPage";
 
 // Admin Layout
 const AdminLayout = () => {
@@ -31,12 +33,6 @@ const AdminLayout = () => {
   );
 };
 
-// User Layout
-const UserLayout = () => {
-  useUserGuard();
-  return <Outlet />;
-};
-
 export default function App() {
   return (
     <Router>
@@ -49,6 +45,9 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="home" element={<HomePage />} />
           <Route path="history" element={<ReadingHistoryPage />} />
+          <Route path="ebook-history" element={<EbookHistoryPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="reader/:bookId" element={<ReaderPage />} />
         </Route>
 
         {/* Route Protected: Admin Dashboard */}

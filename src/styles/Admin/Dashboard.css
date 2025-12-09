@@ -222,6 +222,7 @@
   height: 70px;
   border-radius: 6px;
   flex-shrink: 0;
+  background-color: #A3AED0;
 }
 
 .book-cover-initial {
@@ -263,7 +264,7 @@
 
 .book-id {
   font-size: 11px;
-  color: #A3AED0;
+  color: #000000;
 }
 
 .stock-info {

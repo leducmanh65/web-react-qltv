@@ -10,9 +10,11 @@ interface CreateBorrowSlipFormProps {
   onSuccess: () => void;
   users?: User[];
   books?: Book[];
+  isUserMode?: boolean; // Flag để xác định đang ở user mode hay admin mode
+  preselectedBookId?: number | null; // bookId được chọn sẵn (từ user click "Borrow")
 }
 
-export default function CreateBorrowSlipForm({ isOpen, onClose, onSuccess, users = [], books = [] }: CreateBorrowSlipFormProps) {
+export default function CreateBorrowSlipForm({ isOpen, onClose, onSuccess, users = [], books = [], isUserMode = false, preselectedBookId = null }: CreateBorrowSlipFormProps) {
   const [form, setForm] = useState({
     readerId: 0,
     bookIds: [] as number[],
@@ -28,6 +30,31 @@ export default function CreateBorrowSlipForm({ isOpen, onClose, onSuccess, users
   const [currentBorrowedCount, setCurrentBorrowedCount] = useState(0);
   const [holdingBooksMap, setHoldingBooksMap] = useState<Record<number, number>>({});
   const [userQuota, setUserQuota] = useState(5);
+
+  // Auto-fill userId from localStorage if in user mode
+  useEffect(() => {
+    if (isOpen && isUserMode) {
+      const storedUserId = localStorage.getItem("userId");
+      if (storedUserId) {
+        setForm(prev => ({ ...prev, readerId: parseInt(storedUserId) }));
+      }
+    }
+  }, [isOpen, isUserMode]);
+
+  // Auto-select book when opening from user "Borrow" action
+  useEffect(() => {
+    if (!isOpen || !preselectedBookId) return;
+
+    setForm(prev => {
+      if (prev.bookIds.includes(preselectedBookId)) return prev;
+
+      const holdingQty = holdingBooksMap[preselectedBookId] || 0;
+      const wouldExceedQuota = currentBorrowedCount + prev.bookIds.length + 1 > userQuota;
+      if (wouldExceedQuota || holdingQty >= 2) return prev;
+
+      return { ...prev, bookIds: [...prev.bookIds, preselectedBookId] };
+    });
+  }, [isOpen, preselectedBookId, currentBorrowedCount, holdingBooksMap, userQuota]);
 
   useEffect(() => {
     if (isOpen && localUsers.length === 0) {
@@ -175,38 +202,39 @@ export default function CreateBorrowSlipForm({ isOpen, onClose, onSuccess, users
 
         <form onSubmit={handleSubmit} style={{ overflowY: 'auto', maxHeight: '75vh', paddingRight: '5px' }}>
           
-          {/* 1. Chọn Người dùng */}
-          <div className="admin-form-group">
-            <label className="admin-form-label">Bạn Đọc *</label>
-            <input
-              className="admin-form-input"
-              placeholder="Tìm bạn đọc theo tên, email hoặc ID..."
-              value={userSearch}
-              onChange={(e) => setUserSearch(e.target.value)}
-              onFocus={() => setUserSearch("")}
-              style={{ marginBottom: 8 }}
-            />
-            
-            {userSearch !== null && (filteredUsers.length > 0 || users?.length === 0) && (
-              <div style={{ maxHeight: 150, overflowY: "auto", border: "1px solid #ddd", borderRadius: 6, marginBottom: 8, backgroundColor: "#fff" }}>
-                {filteredUsers.length > 0 ? (
-                  filteredUsers.map((u) => (
-                    <div
-                      key={u.id}
-                      style={{
-                        padding: "10px 12px",
-                        cursor: "pointer",
-                        backgroundColor: form.readerId === u.id ? "#e3f2fd" : "transparent",
-                        borderBottom: "1px solid #f0f0f0",
-                        fontSize: '14px',
-                        color: '#333'
-                      }}
-                      onClick={() => {
-                        setForm({ ...form, readerId: u.id, bookIds: [] });
-                        setUserSearch("");
-                      }}
-                    >
-                      <strong>ID{u.id}</strong> - {u.username} (Quota: {u.bookQuota || 5})
+          {/* 1. Chọn Người dùng - Ẩn nếu ở user mode */}
+          {!isUserMode && (
+            <div className="admin-form-group">
+              <label className="admin-form-label">Bạn Đọc *</label>
+              <input
+                className="admin-form-input"
+                placeholder="Tìm bạn đọc theo tên, email hoặc ID..."
+                value={userSearch}
+                onChange={(e) => setUserSearch(e.target.value)}
+                onFocus={() => setUserSearch("")}
+                style={{ marginBottom: 8 }}
+              />
+              
+              {userSearch !== null && (filteredUsers.length > 0 || users?.length === 0) && (
+                <div style={{ maxHeight: 150, overflowY: "auto", border: "1px solid #ddd", borderRadius: 6, marginBottom: 8, backgroundColor: "#fff" }}>
+                  {filteredUsers.length > 0 ? (
+                    filteredUsers.map((u) => (
+                      <div
+                        key={u.id}
+                        style={{
+                          padding: "10px 12px",
+                          cursor: "pointer",
+                          backgroundColor: form.readerId === u.id ? "#e3f2fd" : "transparent",
+                          borderBottom: "1px solid #f0f0f0",
+                          fontSize: '14px',
+                          color: '#333'
+                        }}
+                        onClick={() => {
+                          setForm({ ...form, readerId: u.id, bookIds: [] });
+                          setUserSearch("");
+                        }}
+                      >
+                        <strong>ID{u.id}</strong> - {u.username} (Quota: {u.bookQuota || 5})
                     </div>
                   ))
                 ) : (
@@ -244,13 +272,14 @@ export default function CreateBorrowSlipForm({ isOpen, onClose, onSuccess, users
               </div>
             )}
           </div>
+          )}
 
           {/* 2. Chọn Sách */}
           <div className="admin-form-group">
             <label className="admin-form-label">Sách Mượn *</label>
             <input
               className="admin-form-input"
-              placeholder="Tìm sách..."
+              placeholder="Tìm sách...  [nếu bạn không ADMIN không cần chọn cái này]"
               value={bookSearch}
               onChange={(e) => setBookSearch(e.target.value)}
               disabled={form.readerId === 0 || isQuotaFull && form.bookIds.length === 0}

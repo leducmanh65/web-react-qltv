@@ -12,6 +12,9 @@ interface EditBookFormProps {
   authors: Author[];
   categories: Category[];
   tags: Tag[];
+  onRefetchAuthors?: () => void;
+  onRefetchCategories?: () => void;
+  onRefetchTags?: () => void;
 }
 
 export default function EditBookForm({

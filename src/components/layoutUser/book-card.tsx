@@ -33,13 +33,10 @@ export const BookCard: React.FC<BookCardProps> = ({ book, onRead }) => {
     : "Unknown Author";
   
   const coverUrl = book.imageUrl || "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781476740195/the-library-book-9781476740195_lg.jpg";
-  const displayPrice = book.price || 0;
-  const estimatedOriginalPrice = displayPrice * 1.3; // Mock 30% discount
-  const discount = Math.round(((estimatedOriginalPrice - displayPrice) / estimatedOriginalPrice) * 100);
-  const rating = 4; // Mock rating
-  const reviews = Math.floor(Math.random() * 500) + 50; // Mock reviews
-  const fullStars = Math.floor(rating);
-  const emptyStars = 5 - fullStars;
+
+
+
+
 
   return (
     <div className="user-book-card">

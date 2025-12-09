@@ -1,4 +1,5 @@
 import React from "react";
+import { Home, History, BookOpen, Settings, Library } from "lucide-react";
 import "../../styles/User/sidebar.css";
 
 type NavigateHandler = (page: string, id?: string) => void;
@@ -8,46 +9,50 @@ interface SidebarProps {
   activePage?: string;
 }
 
-// Đã thêm mục History vào đây
 const NAV_ITEMS = [
-  { icon: "🏠", label: "Home", page: "home" },
-  { icon: "🕒", label: "History", page: "history" }, // <-- Nút Lịch sử mới
-  { icon: "⚙️", label: "Settings", page: "settings" },
-  { icon: "🔍", label: "Search", page: "search" },
-  { icon: "❓", label: "Help", page: "help" },
+  { icon: <Home size={22} />, label: "Trang chủ", page: "home" },
+  { icon: <History size={22} />, label: "Lịch sử mượn", page: "history" },
+  { icon: <BookOpen size={22} />, label: "Đọc Ebook", page: "ebook-history" },
+  { icon: <Settings size={22} />, label: "Cài đặt", page: "settings" },
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ onNavigate, activePage }) => {
   return (
     <aside className="user-sidebar">
-      <nav className="user-sidebar-nav">
-        <div 
-          className="user-sidebar-logo" 
-          onClick={() => onNavigate?.("home")} 
-          role="button" 
-          tabIndex={0} 
-          onKeyDown={(e) => e.key === "Enter" && onNavigate?.("home")}
-        >
-          <div className="logo-text">R</div>
+      {/* Logo Area */}
+      <div 
+        className="user-sidebar-header"
+        onClick={() => onNavigate?.("home")}
+      >
+        <div className="user-sidebar-logo">
+          <Library size={24} color="#fff" />
         </div>
+        <span className="user-logo-text">LMS BookClub</span>
+      </div>
 
+      {/* Navigation */}
+      <nav className="user-sidebar-nav">
         {NAV_ITEMS.map((item) => {
-          // Kiểm tra activePage khớp với item.page
           const isActive = activePage ? activePage === item.page : item.page === "home";
 
           return (
             <button
               key={item.page}
               className={`user-nav-item ${isActive ? "active" : ""}`}
-              title={item.label}
               type="button"
               onClick={() => onNavigate?.(item.page)}
             >
-              {item.icon}
+              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-label">{item.label}</span>
             </button>
           );
         })}
       </nav>
+
+      {/* Footer / Logout button (Optional) */}
+      <div className="user-sidebar-footer">
+        <p>© 2024 LMS BookClub</p>
+      </div>
     </aside>
   );
 };

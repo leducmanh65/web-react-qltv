@@ -3,39 +3,57 @@ import "../../styles/User/featured-section.css";
 
 interface FeaturedSectionProps {
   onViewAll?: () => void;
+  userName?: string; // Thêm prop tên người dùng
 }
 
-const FEATURED_BOOKS = [
-  { src: "/book-queenie.jpg", alt: "Queenie" },
-  { src: "/book-red-girl.jpg", alt: "Red Girl" },
-  { src: "/book-washington-black.jpg", alt: "Washington Black" },
-  { src: "/book-green-house.jpg", alt: "Green House" },
-  { src: "/book-blue-lake.jpg", alt: "Blue Lake" },
-];
-
-export const FeaturedSection: React.FC<FeaturedSectionProps> = ({ onViewAll }) => {
+export const FeaturedSection: React.FC<FeaturedSectionProps> = ({  userName = "Bạn" }) => {
   return (
-    <section className="user-featured-section">
-      <div className="user-featured-container">
-        <div className="user-featured-left">
-          <h1>Join now our book club.</h1>
-          <p>3 months of unlimited reading for $2.99</p>
-          <button className="user-join-btn" type="button">
-            Join Now
-          </button>
+    <section className="user-hero">
+      <div className="user-hero__content">
+        <div className="user-hero__text">
+          <h1 className="user-hero__title">
+            Chào {userName}, <br />
+            <span style={{ color: "rgba(255,255,255,0.9)" }}>Hôm nay ta đọc gì nhỉ?</span>
+          </h1>
+          {/* <p className="user-hero__desc">
+            Thư viện đang có <strong>1,240+</strong> cuốn sách và Ebook chờ bạn khám phá.
+            Đừng quên bạn có sách cần trả trước ngày 15/10 nhé!
+          </p> */}
+          
+      
         </div>
 
-        <div className="user-featured-right">
-          <div className="user-featured-books-grid">
-            {FEATURED_BOOKS.map((book) => (
-              <img key={book.alt} src={book.src} alt={book.alt} className="user-featured-book" />
-            ))}
+        {/* Phần thống kê nhỏ dạng thẻ nổi */}
+        {/* <div className="user-hero__stats">
+          <div className="stat-card">
+            <div className="stat-icon bg-orange">
+              <BookOpen size={20} color="white" />
+            </div>
+            <div>
+              <p className="stat-label">Đang mượn</p>
+              <p className="stat-value">3 cuốn</p>
+            </div>
           </div>
+          
+          <div className="stat-card">
+            <div className="stat-icon bg-blue">
+              <Calendar size={20} color="white" />
+            </div>
+            <div>
+              <p className="stat-label">Hạn trả</p>
+              <p className="stat-value">2 ngày tới</p>
+            </div>
+          </div>
+        </div> */}
+      </div>
 
-          <button className="user-view-all-btn" type="button" onClick={onViewAll}>
-            View All
-          </button>
-        </div>
+      {/* Hình minh họa bên phải */}
+      <div className="user-hero__image-container">
+        <img 
+          src="https://cdni.iconscout.com/illustration/premium/thumb/girl-reading-book-sitting-on-books-2974926-2477353.png" 
+          alt="Reading Illustration" 
+          className="user-hero__image"
+        />
       </div>
     </section>
   );

@@ -6,17 +6,17 @@ import * as api from '../api/apiService';
 export interface Book { 
   id: number; 
   title: string; 
-  bookCode?: string;          // Thêm ? nếu có thể null
-  publishYear?: number;       // Thêm trường này
-  price?: number;             // Thêm trường này
-  isbn?: string;              // Thêm trường này
-  description?: string;       // Thêm trường này
+  bookCode?: string;         
+  publishYear?: number;    
+  price?: number;            
+  isbn?: string;          
+  description?: string;      
   totalQuantity: number; 
   availableQuantity: number; 
   isActive: boolean; 
-  isEbook?: boolean;          // Thêm trường này
-  ebookUrl?: string;          // Thêm trường này
-  ebookContent?: string;      // Thêm trường này
+  isEbook?: boolean;        
+  ebookUrl?: string;          
+  ebookContent?: string;      
   category?: { id: number; categoryName: string; }; 
   authors?: { id: number; authorName: string; }[]; 
   tags?: { id: number; tagName: string; }[]; // Thêm trường tags

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import { createTag } from "../../../api/apiService";
-import "../../../styles/Admin/admin-modal.css"; // Import CSS chung
+import "../../../styles/Admin/admin-modal.css"; 
 
 interface CreateTagFormProps {
   isOpen: boolean;

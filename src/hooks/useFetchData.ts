@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
 /**
- * @param apiCallFn Hàm gọi API (ví dụ: api.getAllBooks, api.getAllUsers)
+ * @param apiCallFn Hàm gọi API api.getAllBooks, api.getAllUsers
  * @param initialData Giá trị khởi tạo cho dữ liệu
- * @param dependencies Mảng dependency để Hook chạy lại (giống useEffect)
+ * @param dependencies Mảng dependency để Hook chạy lại 
  * @returns {data, loading, error, refetch}
  */
 export const useFetchData = <T>(

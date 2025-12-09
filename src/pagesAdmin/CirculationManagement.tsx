@@ -89,7 +89,7 @@ export default function CirculationManagement() {
   const displaySlips = searchResults !== null ? searchResults : (borrowSlips as BorrowSlip[]);
 
   return (
-    <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh' }}>
       <TopBar title="Circulation Management" />
 
       {/* Loading */}

@@ -1,4 +1,6 @@
 import React from "react";
+import { Book, Monitor, Search } from "lucide-react";
+import "../styles/User/home.css";
 
 interface BookFiltersProps {
   bookType: string;
@@ -10,45 +12,53 @@ interface BookFiltersProps {
 export const BookFilters: React.FC<BookFiltersProps> = ({
   bookType, setBookType, ebookSearch, setEbookSearch
 }) => {
-  const getButtonStyle = (type: string) => ({
-    padding: "10px 20px",
-    backgroundColor: bookType === type ? "#007bff" : "#e0e0e0",
-    color: bookType === type ? "white" : "black",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer"
-  });
-
   return (
-    <>
-      <section style={{ margin: "20px 0" }}>
-        <h3 className="user-section-title">Loại sách</h3>
-        <div style={{ display: "flex", gap: 12 }}>
-          <button onClick={() => setBookType("All")} style={getButtonStyle("All")}>
-            📚 Tất cả
-          </button>
-          <button onClick={() => setBookType("Book")} style={getButtonStyle("Book")}>
-            📖 Sách giấy
-          </button>
-          <button onClick={() => setBookType("Ebook")} style={getButtonStyle("Ebook")}>
-            💻 Ebook
-          </button>
-        </div>
-      </section>
+    <section className="user-filter__card">
+      <h3 className="user-section__title" style={{ marginBottom: "16px" }}>
+        🏷️ Chọn loại sách
+      </h3>
+      
+      {/* Tận dụng class user-pagination__btn cho các nút Tab vì style tương tự */}
+      <div style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
+        <button 
+          className="user-pagination__btn"
+          style={bookType === "Book" ? { borderColor: "var(--user-primary)", color: "var(--user-primary)", background: "var(--user-primary-soft)" } : {}}
+          onClick={() => setBookType("Book")}
+        >
+          <Book size={18} style={{ marginRight: 8 }} />
+          Sách giấy
+        </button>
+        
+        <button 
+          className="user-pagination__btn"
+          style={bookType === "Ebook" ? { borderColor: "var(--user-primary)", color: "var(--user-primary)", background: "var(--user-primary-soft)" } : {}}
+          onClick={() => setBookType("Ebook")}
+        >
+          <Monitor size={18} style={{ marginRight: 8 }} />
+          Ebook
+        </button>
+      </div>
 
-      {/* Ô TÌM KIẾM RIÊNG CHO EBOOK */}
+      {/* Ô tìm kiếm riêng cho Ebook */}
       {bookType === "Ebook" && (
-        <section style={{ margin: "20px 0", padding: "15px", background: "#e3f2fd", borderRadius: "8px" }}>
-          <h3 className="user-section-title">🔍 Tìm kiếm Ebook</h3>
-          <input
-            type="text"
-            placeholder="Tìm theo tên sách, tác giả, mã sách, thể loại..."
-            value={ebookSearch}
-            onChange={(e) => setEbookSearch(e.target.value)}
-            style={{ width: "100%", padding: "10px", fontSize: "16px", borderRadius: "4px", border: "1px solid #ccc" }}
-          />
-        </section>
+        <div className="user-filter__row">
+          <div style={{ position: "relative", width: "100%" }}>
+            <input
+              type="text"
+              className="user-filter__input"
+              placeholder="Tìm kiếm Ebook (Tên, tác giả, mã...)"
+              value={ebookSearch}
+              onChange={(e) => setEbookSearch(e.target.value)}
+              style={{ paddingLeft: "42px" }} 
+            />
+            <Search 
+              size={18} 
+              color="#95a5a6" 
+              style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)" }} 
+            />
+          </div>
+        </div>
       )}
-    </>
+    </section>
   );
 };

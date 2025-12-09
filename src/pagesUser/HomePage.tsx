@@ -1,17 +1,27 @@
 import React from "react";
-import "../styles/User/home.css"; // Giữ nguyên CSS
-import { Sidebar } from "../components/layoutUser/sidebar";
+import { useOutletContext } from "react-router-dom";
+import "../styles/User/home.css"; 
 import { FeaturedSection } from "../components/layoutUser/featured-section";
 import EbookViewerModal from "../components/modals/EbookViewerModal";
 import CreateBorrowSlipForm from "../components/forms/create/CreateBorrowSlipForm";
 
-// Import các sub-components trong cùng folder
+// Import các sub-components
 import { useHomeLogic } from "./useHomeLogic";
 import { AdvancedSearch } from "./AdvancedSearch";
 import { BookFilters } from "./BookFilters";
 import { BookGrid } from "./BookGrid";
 
+interface UserLayoutContext {
+  bookType: string;
+  setBookType: (type: string) => void;
+  activePage: string;
+  setActivePage: (page: string) => void;
+}
+
 export const HomePage: React.FC = () => {
+  // Lấy shared state từ UserLayout
+  const { bookType, setBookType } = useOutletContext<UserLayoutContext>();
+  
   // Lấy toàn bộ data và handler từ Custom Hook
   const {
     // Data & States
@@ -22,38 +32,37 @@ export const HomePage: React.FC = () => {
     selectedAuthor, setSelectedAuthor,
     search, setSearch,
     ebookSearch, setEbookSearch,
-    bookType, setBookType,
     
     // Modal Data
     ebookModalOpen, borrowFormOpen, selectedBookId, selectedBookTitle, selectedEbookCover,
     
     // Handlers
-    handleSmartSearch, handleBookClick, handleNavigate, closeModals, 
-    setEbookModalOpen, setBorrowFormOpen, setSelectedBookId
-  } = useHomeLogic();
+    handleSmartSearch, handleBookClick, closeModals, 
+    setBorrowFormOpen, setSelectedBookId
+  } = useHomeLogic(bookType);
 
   return (
-    <div className="user-home-page">
-      <Sidebar onNavigate={handleNavigate} activePage="home" />
-      
-      <div className="user-main-content">
+    <div className="user-layout">
+      <div className="user-layout__content">
         <FeaturedSection />
         
-        {/* SECTION 1: TÌM KIẾM NÂNG CAO */}
-        <AdvancedSearch 
-          search={search} setSearch={setSearch}
-          allBooks={allBooks}
-          categories={categories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
-          tags={tags} selectedTag={selectedTag} setSelectedTag={setSelectedTag}
-          authors={authors} selectedAuthor={selectedAuthor} setSelectedAuthor={setSelectedAuthor}
-          onSearch={handleSmartSearch}
-        />
-
-        {/* SECTION 2: BỘ LỌC LOẠI SÁCH & EBOOK SEARCH */}
+        {/* SECTION 1: BỘ LỌC LOẠI SÁCH */}
         <BookFilters 
           bookType={bookType} setBookType={setBookType}
           ebookSearch={ebookSearch} setEbookSearch={setEbookSearch}
         />
+        
+        {/* SECTION 2: TÌM KIẾM NÂNG CAO - Chỉ hiện khi không phải Ebook */}
+        {bookType !== "Ebook" && (
+          <AdvancedSearch 
+            search={search} setSearch={setSearch}
+            allBooks={allBooks}
+            categories={categories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
+            tags={tags} selectedTag={selectedTag} setSelectedTag={setSelectedTag}
+            authors={authors} selectedAuthor={selectedAuthor} setSelectedAuthor={setSelectedAuthor}
+            onSearch={handleSmartSearch}
+          />
+        )}
 
         {/* SECTION 3: KẾT QUẢ HIỂN THỊ */}
         <BookGrid 
@@ -86,6 +95,8 @@ export const HomePage: React.FC = () => {
             setSelectedBookId(null);
             alert("Thành công!");
           }}
+          isUserMode={true}
+          preselectedBookId={selectedBookId}
         />
       )}
     </div>

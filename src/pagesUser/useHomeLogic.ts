@@ -1,17 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUserGuard } from "../hooks/useUserGuard"; // Hãy chỉnh lại đường dẫn nếu cần
 import { 
   getAllBooks, getAllEbooks, getAllCategories, getAllTags, 
   getAllAuthors, getBooksByAuthorId, searchBooksByTitle, 
   getBooksByCategoryAndTags 
-} from "../api/apiService"; // Chỉnh lại đường dẫn
-import type { Book } from "../components/layoutUser/book-card"; // Chỉnh lại đường dẫn
+} from "../api/apiService"; 
+import type { Book } from "../components/layoutUser/book-card"; 
 
-export const useHomeLogic = () => {
-  useUserGuard(); 
-  const navigate = useNavigate();
-
+export const useHomeLogic = (bookType: string) => {
   // --- STATES ---
   const [categories, setCategories] = useState<any[]>([]);
   const [tags, setTags] = useState<any[]>([]);
@@ -21,7 +16,6 @@ export const useHomeLogic = () => {
   const [selectedTag, setSelectedTag] = useState<any>(null);
   const [selectedAuthor, setSelectedAuthor] = useState<any>(null);
 
-  const [bookType, setBookType] = useState<string>("All");
   const [search, setSearch] = useState<string>("");
   const [ebookSearch, setEbookSearch] = useState<string>("");
   
@@ -137,12 +131,6 @@ export const useHomeLogic = () => {
     }
   };
 
-  const handleNavigate = (page: string, id?: string) => {
-    if (page === "reader" && id) navigate(`/user/reader/${id}`);
-    else if (page === "history") navigate("/user/history");
-    else if (page === "home") navigate("/user");
-  };
-
   // Reset Modal Handler
   const closeModals = () => {
     setEbookModalOpen(false);
@@ -162,10 +150,9 @@ export const useHomeLogic = () => {
     // Search & Filters
     search, setSearch,
     ebookSearch, setEbookSearch,
-    bookType, setBookType,
     // Modal Data
     ebookModalOpen, borrowFormOpen, selectedBookId, selectedBookTitle, selectedEbookCover,
     // Actions
-    handleSmartSearch, handleBookClick, handleNavigate, closeModals, setEbookModalOpen, setBorrowFormOpen, setSelectedBookId
+    handleSmartSearch, handleBookClick, closeModals, setEbookModalOpen, setBorrowFormOpen, setSelectedBookId
   };
 };

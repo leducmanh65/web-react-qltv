@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { X, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { getEbookContent } from "../../api/apiService";
+import { getEbookContent, saveReadingProgress } from "../../api/apiService";
 import "./EbookViewerModal.css";
 
 // Tạo file css EbookViewerModal.css nếu chưa có:
@@ -28,6 +28,7 @@ export default function EbookViewerModal({ bookId, bookTitle, coverUrl, onClose 
   const [loading, setLoading] = useState(false);
   const [index, setIndex] = useState(0);
   const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+  const saveProgressTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!bookId) return;
@@ -54,6 +55,42 @@ export default function EbookViewerModal({ bookId, bookTitle, coverUrl, onClose 
       }
     }
   }, [index, pages, preloadedImages]);
+
+  // Save reading progress with debouncing
+  useEffect(() => {
+    const saveProgress = async () => {
+      if (!bookId || pages.length === 0) return;
+      
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+
+      try {
+        await saveReadingProgress({
+          userId: parseInt(userId),
+          bookId: bookId,
+          currentPage: index + 1,
+          totalPages: pages.length,
+          lastRead: new Date().toISOString(),
+        });
+      } catch (err) {
+        console.error("Failed to save reading progress:", err);
+      }
+    };
+
+    if (saveProgressTimeoutRef.current) {
+      clearTimeout(saveProgressTimeoutRef.current);
+    }
+
+    saveProgressTimeoutRef.current = setTimeout(() => {
+      saveProgress();
+    }, 5000);
+
+    return () => {
+      if (saveProgressTimeoutRef.current) {
+        clearTimeout(saveProgressTimeoutRef.current);
+      }
+    };
+  }, [index, bookId, pages]);
 
   const curr = pages[index];
 

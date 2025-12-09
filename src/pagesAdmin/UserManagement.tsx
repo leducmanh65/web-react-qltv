@@ -18,12 +18,12 @@ const formatUserForDisplay = (user: User) => ({
   role: user.roles?.[0] || 'Member',
   email: user.email,
   phone: user.phoneNumber,
-  birthDate: user.birthDate, // Thêm trường này để truyền vào form sửa
+  birthDate: user.birthDate, 
   avatar: (user.username?.charAt(0) || 'U').toUpperCase(),
   bg: `hsl(${user.id * 60}, 70%, 60%)`,
   status: user.status || 'ACTIVE',
   bookQuota: user.bookQuota || 0,
-  originalData: user // Giữ lại data gốc để truyền vào form sửa
+  originalData: user 
 });
 
 export default function UserManagement() {
@@ -121,86 +121,83 @@ export default function UserManagement() {
           ) : (
             displayData.map((item) => {
               const isAdmin = item.originalData?.roles?.includes('admin') || item.originalData?.roles?.includes('Admin') || item.originalData?.roles?.includes('ADMIN');
-              return (
-                <div key={item.id} className="card user-card" style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '20px',
-                  alignItems: 'start',
-                  backgroundColor: isAdmin ? '#fef3c7' : undefined,
-                  border: isAdmin ? '2px solid #f59e0b' : undefined
-                }}>
-                {/* Left Section: Avatar & Info */}
-                <div>
-                  <div className="user-avatar" style={{ background: item.bg }}>
-                    {item.avatar}
-                  </div>
-                  
-                  <h3 className="user-name">{item.name}</h3>
-                  <p className="user-role">{item.role}</p>
-                  <p style={{ fontSize: '12px', color: '#000000ff', marginBottom: '8px' }}>{item.userCode}</p>
-                </div>
-                
-                {/* Right Section: Contact & Actions */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {/* Contact List */}
-                  <div className="contact-list">
-                    <div className="contact-item">
-                      <Mail size={18} /> <span title={item.email} style={{overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{item.email}</span>
-                    </div>
-                    <div className="contact-item">
-                      <Phone size={18} /> {item.phone || 'N/A'}
-                    </div>
-                  </div>
+        return (
+  <div 
+    key={item.id} 
+    className={`ad-usr-card ${isAdmin ? 'ad-usr-card--admin' : ''}`}
+  >
+    {/* 1. Phần Header: Avatar, Tên, Role */}
+    <div className="ad-usr-header">
+      <div className="ad-usr-avatar" style={{ background: item.bg }}>
+        {item.avatar}
+      </div>
+      
+      <h3 className="ad-usr-name">{item.name}</h3>
+      
+      <div className="ad-usr-badges">
+        <span className="ad-usr-role">{item.role}</span>
+        {isAdmin && <span className="ad-usr-tag-admin">ADMIN</span>}
+      </div>
+      
+      <p className="ad-usr-code">{item.userCode}</p>
+    </div>
 
-                  {/* Footer Actions */}
-                  <div className="card-footer" style={{ gap: '8px', flexDirection: 'column' }}>
-                    {/* Nút Sửa: Đã gắn sự kiện onClick */}
-                    <button 
-                      className="btn-link" 
-                      style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-                      onClick={() => handleEditClick(item.originalData)}
-                    >
-                      <Edit size={16} /> Sửa
-                    </button>
-                    
-                    <button 
-                      className="btn-link" 
-                      style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#E74C3C' }}
-                      onClick={async () => { 
-                        if (handleDelete(item.id)) { 
-                          try {
-                            // Thử kiểm tra xem user có BorrowSlip không
-                            try {
-                              const borrowSlips = await getBorrowSlipsByUserId(item.id);
-                              const hasBorrowSlips = (borrowSlips?.data && Array.isArray(borrowSlips.data) && borrowSlips.data.length > 0) || 
-                                                     (Array.isArray(borrowSlips) && borrowSlips.length > 0);
-                              
-                              // Nếu có BorrowSlip, xóa trước
-                              if (hasBorrowSlips) {
-                                await deleteBorrowSlipUser(item.id);
-                              }
-                            } catch (checkErr) {
-                              // Nếu lỗi khi check, bỏ qua - vẫn xóa user
-                              console.warn("Không thể kiểm tra BorrowSlip, vẫn tiếp tục xóa user", checkErr);
-                            }
-                            
-                            // Xóa user
-                            await deleteUser(item.id);
-                            alert("Xóa người dùng thành công");
-                            if(refetchUsers) refetchUsers();
-                          } catch (e: any) {
-                            alert("Xóa thất bại: " + (e?.message || "Lỗi không xác định"));
-                          }
-                        } 
-                      }}
-                    >
-                      <Trash2 size={16} /> Xóa
-                    </button>
-                  </div>
-                </div>
-              </div>
-              );
+    {/* 2. Phần Body: Thông tin liên hệ */}
+    <div className="ad-usr-body">
+      <div className="ad-usr-contact-row" title={item.email}>
+        <div className="ad-usr-icon-box">
+          <Mail size={14} />
+        </div>
+        <span className="ad-usr-text-truncate">{item.email}</span>
+      </div>
+      
+      <div className="ad-usr-contact-row">
+        <div className="ad-usr-icon-box">
+          <Phone size={14} />
+        </div>
+        <span>{item.phone || 'N/A'}</span>
+      </div>
+    </div>
+
+    {/* 3. Phần Footer: Nút bấm */}
+    <div className="ad-usr-footer">
+      <button 
+        className="ad-usr-btn ad-usr-btn--edit"
+        onClick={() => handleEditClick(item.originalData)}
+      >
+        <Edit size={14} /> Sửa
+      </button>
+      
+      <button 
+        className="ad-usr-btn ad-usr-btn--delete"
+        onClick={async () => { 
+          if (handleDelete(item.id)) { 
+            try {
+              // Logic kiểm tra và xóa cũ của bạn
+              try {
+                const borrowSlips = await getBorrowSlipsByUserId(item.id);
+                const hasBorrowSlips = (borrowSlips?.data && Array.isArray(borrowSlips.data) && borrowSlips.data.length > 0) || 
+                                       (Array.isArray(borrowSlips) && borrowSlips.length > 0);
+                if (hasBorrowSlips) {
+                  await deleteBorrowSlipUser(item.id);
+                }
+              } catch (checkErr) {
+                console.warn("Lỗi check borrow slip", checkErr);
+              }
+              await deleteUser(item.id);
+              alert("Xóa thành công");
+              if(refetchUsers) refetchUsers();
+            } catch (e: any) {
+              alert("Xóa thất bại: " + (e?.message || "Lỗi"));
+            }
+          } 
+        }}
+      >
+        <Trash2 size={14} /> Xóa
+      </button>
+    </div>
+  </div>
+);
             })
           )}
         </div>

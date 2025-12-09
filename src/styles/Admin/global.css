@@ -254,12 +254,12 @@ body {
       5. COMPONENT: CARDS & STATS
        */
 .card {
-  background: linear-gradient(to right, #d0e6f9, #d0e6f9); 
+  /* background: linear-gradient(to right, #d0e6f9, #d0e6f9);  */
   border-radius: 10px;
   padding: 24px;
   box-shadow: var(--shadow-card);
   height: auto;
-  background-color: #cdd8ff;
+  background-color: #dae2ff;
   /* Để lấp đầy grid */
   border: none;
 }
@@ -1141,4 +1141,177 @@ body {
     width: 100%;
     justify-content: center;
   }
+}
+
+/* =========================================
+   ADMIN USER CARD STYLES (Unique Scope)
+   ========================================= */
+
+/* Container chính của Card */
+.ad-usr-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f2f5;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  height: 100%; /* Để các card bằng nhau */
+}
+
+.ad-usr-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+/* Modifier khi là Admin */
+.ad-usr-card--admin {
+  border: 2px solid #f59e0b; /* Viền vàng */
+  background-color: #fffbeb; /* Nền vàng rất nhạt */
+}
+
+/* --- 1. Header Styles --- */
+.ad-usr-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.ad-usr-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.ad-usr-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 6px 0;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.ad-usr-badges {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.ad-usr-role {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.ad-usr-tag-admin {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 6px;
+  background-color: #f59e0b;
+  color: white;
+  border-radius: 4px;
+}
+
+.ad-usr-code {
+  font-size: 11px;
+  color: #9ca3af;
+  font-family: monospace;
+  margin: 0;
+}
+
+/* --- 2. Body Styles (Contact) --- */
+.ad-usr-body {
+  width: 100%;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ad-usr-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #4b5563;
+  width: 100%;
+}
+
+.ad-usr-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+/* Xử lý tràn text (quan trọng cho email dài) */
+.ad-usr-text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  flex: 1;
+}
+
+/* --- 3. Footer Styles (Buttons) --- */
+.ad-usr-footer {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-top: auto; /* Đẩy nút xuống đáy nếu card dài */
+}
+
+.ad-usr-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ad-usr-btn--edit {
+  background-color: #eff6ff; /* Xanh nhạt */
+  color: #2563eb;
+}
+.ad-usr-btn--edit:hover {
+  background-color: #dbeafe;
+}
+
+.ad-usr-btn--delete {
+  background-color: #fef2f2; /* Đỏ nhạt */
+  color: #dc2626;
+}
+.ad-usr-btn--delete:hover {
+  background-color: #fee2e2;
 }

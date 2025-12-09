@@ -81,6 +81,13 @@ export default function Sidebar() {
       </nav>
 
       <div className="sidebar-footer">
+        <button
+          className="btn-logout"
+          style={{ backgroundColor: "#259cebff", marginRight: 8 }}
+          onClick={() => { window.location.href = "/user"; }}
+        >
+          Go to User
+        </button>
         <button className="btn-logout" onClick={Logout}>Logout</button>
       </div>
     </aside>
